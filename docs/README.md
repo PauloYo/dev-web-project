@@ -1,0 +1,1 @@
+Diretório destinado a documentação do projeto.

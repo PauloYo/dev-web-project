@@ -1,0 +1,1 @@
+Diretório destinado aos diagramas do projeto.

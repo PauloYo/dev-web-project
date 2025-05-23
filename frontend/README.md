@@ -1,0 +1,1 @@
+Diretório destinado a implementação do Frontend do projeto.
