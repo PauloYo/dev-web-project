@@ -29,3 +29,9 @@ Permitir atualização ou exclusão de jogos adicionados pelo usuário.
 
 ## 10. Layout Responsivo e Interface Amigável
 Design adaptável para celular, tablet e desktop, focado em boa usabilidade.
+
+## 11. CRUD do administrador do sistema
+Tela com as opçoes de criar novos jogos, editar jogos ja existentes e deletar jogos do sistema.
+
+## 12. Moderaçao dos comentarios postados
+Possibilidade do administrador apagar comentarios.
