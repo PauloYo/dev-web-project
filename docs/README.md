@@ -31,10 +31,11 @@ Este projeto visa o desenvolvimento de um sistema de pedidos online. O sistema p
 
 Cada funcionalidade descrita no backlog possui ao menos uma tela representando sua interface esperada.
 
-### 🖼️ Protótipo dos requisitos
+### 🖼️ Telas dos requisitos
 
-![Protótipo da tela de listagem de produtos](./prototipos/Dev-Web-Prototype.png)
-Todas as telas do sistema.
+[![Protótipo da tela de listagem de produtos](./prototipos/Dev-Web-Prototype.png)](./prototipos/Dev-Web-Prototype.png)
+
+Todas as telas do sistema, também pode ser acessado pelo [figma](https://www.figma.com/design/cRnFYRXjhWQQ9i7eRKHfJk/Dev-Web-Prototype?node-id=0-1&t=6eKfZmTnOznsbiQ4-1).
 
 ---
 
