@@ -45,34 +45,16 @@ O projeto  do sistema
 
 ### Modelo 
 
-
+![Modelo do sistema](./imagens/Modelo.png)
 
 ### Esboço da arquitetura geral (cliente-servidor)
 
-
-
-
+![Esboço da arquitetura](./imagens/Arquitetura.png)
 
 ### Autorização  e Autenticação (MUDAR!)
-A autorização no Strapi (a partir do v4 e mantida no v5) é baseada em perfis de usuários (roles) e permissões atribuídas a esses perfis. Ela define o que cada usuário pode ou não pode fazer ao interagir com os endpoints da API.
+A autorização e autenticação será realizada utilizando Express.js e banco de dados.
 
-1. Tipos de usuários
-O Strapi tem dois contextos principais de usuários:
-
-🔹 Usuários Autenticados
-Criados via cadastro/login na API pública.
-
-Associados a uma role do tipo “Authenticated” ou outra personalizada.
-
-Usam token JWT para acesso autenticado.
-
-🔸 Usuários Administrativos
-Criados via painel de administração do Strapi.
-
-Usam o Strapi Admin Panel.
-
-Gerenciados separadamente e com permissões diferentes.
-
+Serão definidos middlewares que não permitiram que usuários com perfis indevidos acessem partes da aplicação que não deveriam acessar.
 
 ### Tecnologias a serem utilizadas (REVISAR!)
 Node.js, React, PostgreSQL
