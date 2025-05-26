@@ -51,11 +51,6 @@ O projeto  do sistema
 
 ![Esboço da arquitetura](./imagens/Arquitetura.png)
 
-### Autorização  e Autenticação (MUDAR!)
-A autorização e autenticação será realizada utilizando Express.js e banco de dados.
-
-Serão definidos middlewares que não permitiram que usuários com perfis indevidos acessem partes da aplicação que não deveriam acessar.
-
 ### Tecnologias a serem utilizadas
 Node.js, React, PostgreSQL, TypeScript
 
