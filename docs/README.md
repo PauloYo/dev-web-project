@@ -6,24 +6,24 @@
 
 ## 🧾 Visão Geral
 
-Este projeto visa o desenvolvimento de um sistema de pedidos online. O sistema permite que clientes visualizem produtos, adicionem ao carrinho, finalizem compras e acompanhem pedidos. A seguir, detalhamos os principais artefatos exigidos para a entrega.
+Este projeto busca o desenvolvimento de um sistema de jogos, permitindo a classificação de diferentes jogos em diferentes listas. O sistema também permite a avaliação dos usuários em jogos, bem como a possibilidade de compartilhar publicamente listas criadas por um usuário.
 
 ---
 
-## ✅ Backlog (MUDAR!)
+## ✅ Backlog
 
 | ID    | Prioridade | História de Usuário                                                                 |
 |-------|------------|--------------------------------------------------------------------------------------|
-| HU-1  | 1️⃣         | **No papel de cliente**, desejo **visualizar uma lista de produtos com imagem e preço**, para poder escolher o que desejo comprar. |
-| HU-2  | 2️⃣         | **No papel de cliente**, desejo **filtrar os produtos por categoria**, para encontrar mais rapidamente o que procuro. |
-| HU-3  | 3️⃣         | **No papel de cliente**, desejo **adicionar um produto ao carrinho**, para organizar minha compra antes de finalizar. |
-| HU-4  | 4️⃣         | **No papel de cliente**, desejo **visualizar os itens no meu carrinho com totais**, para acompanhar o valor da compra. |
-| HU-5  | 5️⃣         | **No papel de cliente**, desejo **remover ou alterar a quantidade de itens no carrinho**, para ajustar minha compra. |
-| HU-6  | 6️⃣         | **No papel de cliente**, desejo **finalizar o pedido com um clique**, para concluir minha compra com rapidez. |
-| HU-7  | 7️⃣         | **No papel de cliente**, desejo **ver uma confirmação visual do pedido após finalizar**, para ter certeza que deu tudo certo. |
-| HU-8  | 8️⃣         | **No papel de cliente**, desejo **me autenticar com login e senha**, para acessar meu histórico de pedidos e carrinho. |
-| HU-9  | 9️⃣         | **No papel de cliente**, desejo **visualizar o histórico de pedidos realizados**, para acompanhar minhas compras anteriores. |
-| HU-10 | 🔟         | **No papel de administrador**, desejo **visualizar todos os pedidos realizados**, para acompanhar e organizar a entrega. |
+| HU-1  | 1️⃣         | **No papel de cliente**, desejo **visualizar uma lista de jogos com imagem e descrição**, para poder escolher o que desejo jogar ou avaliar. |
+| HU-2  | 2️⃣         | **No papel de cliente**, desejo **filtrar jogos por nome ou plataforma**, para encontrar mais rapidamente o que procuro. |
+| HU-3  | 3️⃣         | **No papel de cliente**, desejo **organizar os jogos por nome ou por nota**, para descobrir novos jogos. |
+| HU-4  | 4️⃣         | **No papel de cliente**, desejo **visualizar os itens na minhas listas**, para criar listas parsonalizadas. |
+| HU-5  | 5️⃣         | **No papel de cliente**, desejo **remover ou alterar os jogos na minha lista**, para ajustar minhas organizações. |
+| HU-6  | 6️⃣         | **No papel de cliente**, desejo **avaliar jogos com comentário e nota**, para expressar minha opinião aos outros usuários. |
+| HU-7  | 7️⃣         | **No papel de cliente**, desejo **ver o perfil de outros usuários**, para saber os gostos de pessoas que eu conheço. |
+| HU-8  | 8️⃣         | **No papel de cliente**, desejo **me autenticar com login e senha**, para acessar minhas listas privadas. |
+| HU-9  | 9️⃣         | **No papel de administrador**, desejo **adicionar e apagar jogos**, para atualizar a lista de jogos disponiveis. |
+| HU-10 | 🔟         | **No papel de administrador**, desejo **modificar as informações de jogos**, para corrigi-las. |
 
 ---
 
@@ -56,8 +56,8 @@ A autorização e autenticação será realizada utilizando Express.js e banco d
 
 Serão definidos middlewares que não permitiram que usuários com perfis indevidos acessem partes da aplicação que não deveriam acessar.
 
-### Tecnologias a serem utilizadas (REVISAR!)
-Node.js, React, PostgreSQL
+### Tecnologias a serem utilizadas
+Node.js, React, PostgreSQL, TypeScript
 
 ---
 
