@@ -44,4 +44,46 @@ router.delete('/:id', async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+router.patch('/:id/imagem', async (req, res) => {
+  const { imagem } = req.body;
+  try {
+    const result = await pool.query(
+      'UPDATE USUARIO SET imagem=$1 WHERE id=$2 RETURNING *',
+      [imagem, req.params.id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Usuário não encontrado' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.patch('/:id/descricao', async (req, res) => {
+  const { descricao } = req.body;
+  try {
+    const result = await pool.query(
+      'UPDATE USUARIO SET descricao=$1 WHERE id=$2 RETURNING *',
+      [descricao, req.params.id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Usuário não encontrado' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.patch('/:id/nome', async (req, res) => {
+  const { nome } = req.body;
+  try {
+    const result = await pool.query(
+      'UPDATE USUARIO SET nome=$1 WHERE id=$2 RETURNING *',
+      [nome, req.params.id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Usuário não encontrado' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

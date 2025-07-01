@@ -30,6 +30,12 @@ curl -X PUT http://localhost:3001/usuarios/1 -H "Content-Type: application/json"
 
 curl -X DELETE http://localhost:3001/usuarios/1
 
+curl -X PATCH http://localhost:3001/usuarios/1/imagem -H "Content-Type: application/json" -d "{\"imagem\":\"https://novaurl.com/imagem.jpg\"}"
+
+curl -X PATCH http://localhost:3001/usuarios/1/descricao -H "Content-Type: application/json" -d "{\"descricao\":\"Nova descrição\"}"
+
+curl -X PATCH http://localhost:3001/usuarios/1/nome -H "Content-Type: application/json" -d "{\"nome\":\"Novo Nome\"}"
+
 #####
 
 PLATAFORMA
@@ -71,6 +77,8 @@ curl http://localhost:3001/avaliacoes/1
 curl -X PUT http://localhost:3001/avaliacoes/1 -H "Content-Type: application/json" -d "{\"nota\":8,\"fk_Jogo_id\":1,\"fk_Usuario_id\":1}"
 
 curl -X DELETE http://localhost:3001/avaliacoes/1
+
+curl -X PATCH http://localhost:3001/avaliacoes/1/nota -H "Content-Type: application/json" -d "{\"nota\":8}"
 
 #####
 

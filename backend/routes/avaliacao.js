@@ -12,12 +12,14 @@ router.post('/', async (req, res) => {
     res.status(201).json(result.rows[0]);
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
+
 router.get('/', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM AVALIACAO');
     res.json(result.rows);
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
+
 router.get('/:id', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM AVALIACAO WHERE id = $1', [req.params.id]);
@@ -25,6 +27,7 @@ router.get('/:id', async (req, res) => {
     res.json(result.rows[0]);
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
+
 router.put('/:id', async (req, res) => {
   const { nota, fk_Jogo_id, fk_Usuario_id } = req.body;
   try {
@@ -36,6 +39,21 @@ router.put('/:id', async (req, res) => {
     res.json(result.rows[0]);
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
+
+router.patch('/:id/nota', async (req, res) => {
+  const { nota } = req.body;
+  try {
+    const result = await pool.query(
+      'UPDATE AVALIACAO SET nota=$1 WHERE id=$2 RETURNING *',
+      [nota, req.params.id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Avaliação não encontrada' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 router.delete('/:id', async (req, res) => {
   try {
     const result = await pool.query('DELETE FROM AVALIACAO WHERE id=$1 RETURNING *', [req.params.id]);
