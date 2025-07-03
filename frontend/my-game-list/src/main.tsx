@@ -3,12 +3,16 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './index.css'
 import App from './routes/Home.tsx'
+import SignIn from './routes/SignIn.tsx'
+import Login from './routes/Login.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

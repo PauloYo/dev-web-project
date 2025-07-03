@@ -5,6 +5,11 @@ const pool = require('../db');
 router.post('/', async (req, res) => {
   const { imagem, nome, senha, descricao, email, ehAdmin } = req.body;
   try {
+    // Verifica se já existe usuário com o mesmo e-mail
+    const existe = await pool.query('SELECT id FROM USUARIO WHERE email = $1', [email]);
+    if (existe.rows.length > 0) {
+      return res.status(400).json({ error: 'E-mail já cadastrado.' });
+    }
     const result = await pool.query(
       'INSERT INTO USUARIO (imagem, nome, senha, descricao, email, ehAdmin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
       [imagem, nome, senha, descricao, email, ehAdmin]
@@ -12,12 +17,14 @@ router.post('/', async (req, res) => {
     res.status(201).json(result.rows[0]);
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
+
 router.get('/', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM USUARIO');
     res.json(result.rows);
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
+
 router.get('/:id', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM USUARIO WHERE id = $1', [req.params.id]);
@@ -25,6 +32,7 @@ router.get('/:id', async (req, res) => {
     res.json(result.rows[0]);
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
+
 router.put('/:id', async (req, res) => {
   const { imagem, nome, senha, descricao, email, ehAdmin } = req.body;
   try {
@@ -36,6 +44,7 @@ router.put('/:id', async (req, res) => {
     res.json(result.rows[0]);
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
+
 router.delete('/:id', async (req, res) => {
   try {
     const result = await pool.query('DELETE FROM USUARIO WHERE id=$1 RETURNING *', [req.params.id]);
