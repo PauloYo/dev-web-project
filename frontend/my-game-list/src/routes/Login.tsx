@@ -1,11 +1,13 @@
 import Nav from '../components/Nav'
 import Title from '../components/Title'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [mensagem, setMensagem] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,8 +18,8 @@ function Login() {
         (u: any) => u.email === email && u.senha === senha
       );
       if (usuario) {
-        setMensagem('Login realizado com sucesso!');
-        // Aqui você pode redirecionar ou salvar o usuário logado
+        localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
+        navigate('/profile-edit');
       } else {
         setMensagem('Email ou senha inválidos.');
       }

@@ -11,9 +11,20 @@ router.post('/', async (req, res) => {
 });
 router.get('/', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM JOGO');
+    const { nome } = req.query;
+    let result;
+    if (nome) {
+      result = await pool.query(
+        'SELECT * FROM JOGO WHERE LTRIM(nome) ILIKE $1',
+        [`${nome}%`]
+      );
+    } else {
+      result = await pool.query('SELECT * FROM JOGO');
+    }
     res.json(result.rows);
-  } catch (err) { res.status(500).json({ error: err.message }); }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 router.get('/:id', async (req, res) => {
   try {

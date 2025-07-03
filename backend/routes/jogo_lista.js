@@ -13,10 +13,14 @@ router.post('/', async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 router.get('/', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM JOGO_LISTA');
-    res.json(result.rows);
-  } catch (err) { res.status(500).json({ error: err.message }); }
+  const { fk_Lista_id } = req.query;
+  let result;
+  if (fk_Lista_id) {
+    result = await pool.query('SELECT * FROM JOGO_LISTA WHERE fk_Lista_id = $1', [fk_Lista_id]);
+  } else {
+    result = await pool.query('SELECT * FROM JOGO_LISTA');
+  }
+  res.json(result.rows);
 });
 router.delete('/', async (req, res) => {
   const { fk_Jogo_id, fk_Lista_id } = req.body;

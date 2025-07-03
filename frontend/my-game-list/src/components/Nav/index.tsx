@@ -13,6 +13,7 @@ function Nav() {
         <div className="nav-right flex gap-[20px] items-center justify-center h-full">
             <a href="/sign-in">Sign In</a>
             <a href="/login">Login</a>
+            <a href="/create-list">Create List</a>
             <a href="/profile">
                 <img src={UserIcon} alt="User Icon" />
             </a>
