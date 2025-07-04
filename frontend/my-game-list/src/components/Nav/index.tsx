@@ -17,6 +17,7 @@ function Nav() {
             <a href="/user-lists">User Lists</a>
             <a href="/profile">
             <a href="/games">Games</a>
+            <a href="/public-lists">Public Lists</a>
                 <img src={UserIcon} alt="User Icon" />
             </a>
         </div>
