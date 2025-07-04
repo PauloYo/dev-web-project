@@ -14,7 +14,9 @@ function Nav() {
             <a href="/sign-in">Sign In</a>
             <a href="/login">Login</a>
             <a href="/create-list">Create List</a>
+            <a href="/user-lists">User Lists</a>
             <a href="/profile">
+            <a href="/games">Games</a>
                 <img src={UserIcon} alt="User Icon" />
             </a>
         </div>

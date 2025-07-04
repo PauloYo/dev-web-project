@@ -19,7 +19,20 @@ router.get('/', async (req, res) => {
         [`${nome}%`]
       );
     } else {
-      result = await pool.query('SELECT * FROM JOGO');
+      result = await pool.query(`
+        SELECT 
+          j.id AS jogo_id,
+          j.nome AS jogo_nome,
+          j.descricao,
+          j.imagem,
+          json_agg(
+            json_build_object('id', c.id, 'descricao', c.descricao)
+          ) FILTER (WHERE c.id IS NOT NULL) AS categorias
+        FROM JOGO j
+        LEFT JOIN CATEGORIA_JOGO cj ON cj.fk_Jogo_id = j.id
+        LEFT JOIN CATEGORIA c ON c.id = cj.fk_Categoria_id
+        GROUP BY j.id
+        `);
     }
     res.json(result.rows);
   } catch (err) {
@@ -48,5 +61,23 @@ router.delete('/:id', async (req, res) => {
     res.json({ message: 'Jogo deletado' });
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
+
+// Rota POST /jogos/batch
+router.post('/batch', async (req, res) => {
+  const { ids } = req.body; // espera { ids: [1,2,3] }
+  try {
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ error: 'IDs inválidos' });
+    }
+    const result = await pool.query(
+      'SELECT * FROM JOGO WHERE id = ANY($1::int[])',
+      [ids]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 module.exports = router;
