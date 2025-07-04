@@ -26,13 +26,18 @@ router.get('/', async (req, res) => {
           j.descricao,
           j.imagem,
           json_agg(
-            json_build_object('id', c.id, 'descricao', c.descricao)
-          ) FILTER (WHERE c.id IS NOT NULL) AS categorias
+            DISTINCT jsonb_build_object('id', c.id, 'descricao', c.descricao)
+          ) FILTER (WHERE c.id IS NOT NULL) AS categorias,
+          json_agg(
+            DISTINCT jsonb_build_object('id', p.id, 'descricao', p.descricao)
+          ) FILTER (WHERE p.id IS NOT NULL) AS plataformas
         FROM JOGO j
-        LEFT JOIN CATEGORIA_JOGO cj ON cj.fk_Jogo_id = j.id
-        LEFT JOIN CATEGORIA c ON c.id = cj.fk_Categoria_id
-        GROUP BY j.id
-        `);
+        LEFT JOIN CATEGORIA_JOGO cj ON cj.fk_jogo_id = j.id
+        LEFT JOIN CATEGORIA c ON c.id = cj.fk_categoria_id
+        LEFT JOIN JOGO_PLATAFORMA pj ON pj.fk_jogo_id = j.id
+        LEFT JOIN PLATAFORMA p ON p.id = pj.fk_plataforma_id
+        GROUP BY j.id;
+      `);
     }
     res.json(result.rows);
   } catch (err) {

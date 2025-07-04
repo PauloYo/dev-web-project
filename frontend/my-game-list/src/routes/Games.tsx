@@ -8,12 +8,18 @@ interface Categoria {
   descricao: string;
 }
 
+interface Plataforma {
+  id: number;
+  descricao: string;
+}
+
 interface Jogo {
   id: number;
   nome: string;
   descricao: string;
   imagem?: string;
   categorias?: Categoria[];
+  plataformas?: Plataforma[];
 }
 
 
@@ -28,12 +34,13 @@ function Games() {
         if (!res.ok) throw new Error('Erro ao buscar jogos');
         const data = await res.json();
         setJogos(data.map((j: any) => ({
-            id: j.jogo_id,
-            nome: j.jogo_nome,
-            descricao: j.descricao,
-            imagem: j.imagem,
-            categorias: j.categorias || []
-        })));
+          id: j.jogo_id,
+          nome: j.jogo_nome,
+          descricao: j.descricao,
+          imagem: j.imagem,
+          categorias: j.categorias || [],
+          plataformas: j.plataformas || []
+      })));
       } catch (err) {
         setMensagem('Erro ao carregar jogos.');
       }
@@ -52,14 +59,14 @@ function Games() {
     }
   };
 
-  return (
+    return (
     <>
       <Nav />
       <section className="flex flex-col items-center gap-[30px] mt-[50px] px-4">
         <Title text="Lista de Jogos" size="text-[48px]" />
         {mensagem && <p className="text-red-500">{mensagem}</p>}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl w-full">
-          {jogos.map(jogo => (
+          {jogos.map((jogo: Jogo) => (
             <div key={jogo.id} className="bg-gray-800 p-4 rounded-lg flex flex-col items-center">
               <img
                 src={getImagemJogo(jogo)}
@@ -76,11 +83,25 @@ function Games() {
                       key={cat.id}
                       className="bg-blue-800 px-2 py-1 rounded-full text-xs"
                     >
-                    {cat.descricao}
+                      {cat.descricao}
                     </span>
                   ))}
                 </div>
               )}
+
+              {jogo.plataformas && jogo.plataformas.length > 0 && (
+                <div className="mt-2 text-sm text-green-300 flex flex-wrap gap-2">
+                  {jogo.plataformas.map(plataforma => (
+                    <span
+                      key={plataforma.id}
+                      className="bg-green-800 px-2 py-1 rounded-full text-xs"
+                    >
+                      {plataforma.descricao}
+                    </span>
+                  ))}
+                </div>
+              )}
+
             </div>
           ))}
         </div>
