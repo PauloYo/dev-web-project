@@ -3,18 +3,28 @@ import { CreateUsuarioDTO, Usuario } from '../models/usuario.model';
 
 export class UsuarioService {
   static async create(data: CreateUsuarioDTO): Promise<Usuario> {
-    // Verifica se já existe usuário com o mesmo e-mail
-    const existe = await pool.query('SELECT id FROM USUARIO WHERE email = $1', [data.email]);
-    if (existe.rows.length > 0) {
-      throw new Error('E-mail já cadastrado.');
-    }
-    
-    const result = await pool.query(
-      'INSERT INTO USUARIO (imagem, nome, senha, descricao, email, ehAdmin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [data.imagem, data.nome, data.senha, data.descricao, data.email, data.ehAdmin]
-    );
+    try {
+      // Verifica se já existe usuário com o mesmo e-mail
+      const existe = await pool.query('SELECT id FROM USUARIO WHERE email = $1', [data.email]);
+      if (existe.rows.length > 0) {
+        throw new Error('E-mail já cadastrado.');
+      }
+      
+      const result = await pool.query(
+        'INSERT INTO USUARIO (imagem, nome, senha, descricao, email, ehAdmin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+        [data.imagem, data.nome, data.senha, data.descricao, data.email, data.ehAdmin]
+      );
 
-    return result.rows[0];
+      return result.rows[0];
+    } catch (error: any) {
+      // Se for erro do banco, relança com mensagem mais clara
+      if (error.code === '23505') {
+        throw new Error('E-mail já cadastrado.');
+      }
+      
+      // Relança outros erros
+      throw error;
+    }
   }
 
   static async getAll(): Promise<Usuario[]> {

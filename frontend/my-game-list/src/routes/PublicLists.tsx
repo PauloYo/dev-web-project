@@ -41,7 +41,7 @@ function PublicLists() {
       const listasComDetalhes = await Promise.all(
         listasData.map(async (lista) => {
           // Busca jogos da lista
-          const resJogoLista = await fetch(`http://localhost:3001/jogo_lista?fk_Lista_id=${lista.id}`);
+          const resJogoLista = await fetch(`http://localhost:3001/jogos-listas?fk_Lista_id=${lista.id}`);
           const jogoListaData = resJogoLista.ok ? await resJogoLista.json() : [];
 
           const jogoIds = jogoListaData.map((jl: any) => jl.fk_jogo_id);
@@ -90,7 +90,7 @@ function PublicLists() {
           {listasPublicas.map(lista => (
             <div key={lista.id} className="bg-gray-800 p-6 rounded-lg mb-6">
               <h2 className="text-white text-xl font-bold">{lista.nome}</h2>
-              <p className="text-gray-400 mb-2">Dono: <span className="text-green-400">{lista.usuarioNome || 'Desconhecido'}</span></p>
+              <p className="text-gray-400 mb-2">Dono: <span className="text-green-400">{lista.usuarioNome?.trim() ? lista.usuarioNome : 'Desconhecido'}</span></p>
               {lista.jogos.length > 0 ? (
                 <ul className="flex flex-wrap gap-3">
                   {lista.jogos.map(jogo => (

@@ -21,7 +21,7 @@ export class ListaController {
     }
 
     static async getById(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const lista = await ListaService.getById(id);
 
         if (!lista) {
@@ -32,7 +32,7 @@ export class ListaController {
     }
 
     static async update(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const data = res.locals.body as CreateListaDTO;
         const lista = await ListaService.update(id, data);
 
@@ -43,7 +43,7 @@ export class ListaController {
     }
 
     static async updateNome(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const { nome }: { nome: string } = res.locals.body;
         const lista = await ListaService.updateNome(id, nome);
 
@@ -54,7 +54,7 @@ export class ListaController {
     }
 
     static async updateStatus(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const { ehPublico }: { ehPublico: boolean } = res.locals.body;
         const lista = await ListaService.updateStatus(id, ehPublico);
 
@@ -65,7 +65,7 @@ export class ListaController {
     }
 
     static async delete(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const deleted = await ListaService.delete(id);
 
         if (!deleted) {

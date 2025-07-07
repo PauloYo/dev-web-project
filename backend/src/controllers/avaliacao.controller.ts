@@ -20,7 +20,7 @@ export class AvaliacaoController {
     }
 
     static async getById(req: Request, res: Response) {
-        const id = Number(res.locals.id); 
+        const id = Number(res.locals.params.id); 
         const avaliacao = await AvaliacaoService.getById(id);
 
         if (!avaliacao) {
@@ -31,7 +31,7 @@ export class AvaliacaoController {
     }
 
     static async update(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const data = res.locals.body as CreateAvaliacaoDTO;
         const avaliacao = await AvaliacaoService.update(id, data);
 
@@ -42,7 +42,7 @@ export class AvaliacaoController {
     }
 
     static async updateNota(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const { nota }: { nota: number } = res.locals.body;
         const avaliacao = await AvaliacaoService.updateNota(id, nota);
 
@@ -53,7 +53,7 @@ export class AvaliacaoController {
     }
 
     static async delete(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const deleted = await AvaliacaoService.delete(id);
 
         if (!deleted) {

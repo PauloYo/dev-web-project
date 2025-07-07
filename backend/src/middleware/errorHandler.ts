@@ -14,6 +14,14 @@ export const errorHandler = (
 ) => {
   console.error('Error:', err);
   
+  // Erro de validação Zod
+  if (err?.issues && Array.isArray(err.issues)) {
+    const messages = err.issues.map((issue: any) => 
+      `${issue.path.join('.')}: ${issue.message}`
+    );
+    return res.status(400).json({ error: messages.join(', ') });
+  }
+  
   // Erro de violação de chave única (duplicação)
   if (err.code === '23505') {
     return res.status(400).json({ error: 'Dados duplicados' });

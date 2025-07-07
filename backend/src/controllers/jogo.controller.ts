@@ -19,6 +19,11 @@ export class JogoController {
         res.json(jogos);
     }
 
+    static async getAllWithDetails(req: Request, res: Response) {
+        const jogos = await JogoService.getAllWithDetails();
+        res.json(jogos);
+    }
+
     static async getById(req: Request, res: Response) {
         const id = Number(res.locals.id);
         const jogo = await JogoService.getById(id);

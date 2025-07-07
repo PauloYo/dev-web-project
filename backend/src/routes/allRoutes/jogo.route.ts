@@ -21,6 +21,11 @@ router.get(
 );
 
 router.get(
+  '/details',
+  asyncHandler(JogoController.getAllWithDetails) // Assuming this method exists in JogoController
+)
+
+router.get(
   '/:id',
   validateRequest({
     params: IdParamSchema

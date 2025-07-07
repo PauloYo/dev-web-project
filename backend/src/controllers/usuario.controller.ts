@@ -20,7 +20,7 @@ export class UsuarioController {
     }
 
     static async getById(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const usuario = await UsuarioService.getById(id);
 
         if (!usuario) {

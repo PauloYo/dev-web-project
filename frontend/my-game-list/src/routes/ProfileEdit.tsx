@@ -60,10 +60,12 @@ function ProfileEdit() {
     const reader = new FileReader();
     reader.onloadend = async () => {
       try {
+        const imagemString = reader.result as string;
+
         const res = await fetch(`http://localhost:3001/usuarios/${userId}/imagem`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ imagem: reader.result })
+          body: JSON.stringify({ imagem: imagemString })
         });
         if (res.ok) {
           const usuarioAtualizado = await res.json();

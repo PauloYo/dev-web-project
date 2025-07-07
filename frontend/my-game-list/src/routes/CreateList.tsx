@@ -63,7 +63,7 @@ function CreateList() {
         // Adiciona os jogos à lista
         await Promise.all(
           jogosSelecionados.map(jogo =>
-            fetch('http://localhost:3001/jogo_lista', {
+            fetch('http://localhost:3001/jogos-listas', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({

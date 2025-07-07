@@ -32,7 +32,16 @@ export const validateRequest = (schemas: Schemas) => (
     }
 
     next();
-  } catch (error) {
-    return res.status(400).json({ error: (error as any).flatten?.() || error });
+  } catch (error: any) {
+    // Se for erro do Zod, extrair mensagens legíveis
+    if (error?.issues && Array.isArray(error.issues)) {
+      const messages = error.issues.map((issue: any) => 
+        `${issue.path.join('.')}: ${issue.message}`
+      );
+      return res.status(400).json({ error: messages.join(', ') });
+    }
+    
+    // Se for erro genérico, retornar a mensagem
+    return res.status(400).json({ error: error.message || 'Erro de validação' });
   }
 };

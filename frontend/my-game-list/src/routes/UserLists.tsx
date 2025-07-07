@@ -44,7 +44,7 @@ function UserLists() {
 
       const listasComJogos = await Promise.all(
         listasData.map(async (lista: any) => {
-          const resJogoLista = await fetch(`http://localhost:3001/jogo_lista?fk_Lista_id=${lista.id}`);
+          const resJogoLista = await fetch(`http://localhost:3001/jogos-listas?fk_Lista_id=${lista.id}`);
           const jogoListaData = resJogoLista.ok ? await resJogoLista.json() : [];
 
           const jogoIds = jogoListaData.map((jl: any) => jl.fk_jogo_id);
@@ -159,7 +159,7 @@ function UserLists() {
   const adicionarJogo = async (jogo: Jogo) => {
   if (!listaEditando) return;
   try {
-    const res = await fetch(`http://localhost:3001/jogo_lista`, {
+    const res = await fetch(`http://localhost:3001/jogos-listas`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ fk_Jogo_id: jogo.id, fk_Lista_id: listaEditando.id }),
@@ -190,7 +190,7 @@ function UserLists() {
   const removerJogo = async (jogoId: number) => {
   if (!listaEditando) return;
   try {
-    const res = await fetch(`http://localhost:3001/jogo_lista`, {
+    const res = await fetch(`http://localhost:3001/jogos-listas`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ fk_Jogo_id: jogoId, fk_Lista_id: listaEditando.id }),

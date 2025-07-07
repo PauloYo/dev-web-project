@@ -30,7 +30,7 @@ function Games() {
   useEffect(() => {
     const fetchJogos = async () => {
       try {
-        const res = await fetch('http://localhost:3001/jogos');
+        const res = await fetch('http://localhost:3001/jogos/details');
         if (!res.ok) throw new Error('Erro ao buscar jogos');
         const data = await res.json();
         setJogos(data.map((j: any) => ({
