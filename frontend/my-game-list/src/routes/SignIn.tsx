@@ -3,13 +3,14 @@ import Title from '../components/Title'
 import { useState } from 'react'
 
 function SignIn() {
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [mensagem, setMensagem] = useState('');
+  const [nome, setNome] = useState('')
+  const [email, setEmail] = useState('')
+  const [senha, setSenha] = useState('')
+  const [mensagem, setMensagem] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
+    
     try {
       const res = await fetch('http://localhost:3001/usuarios', {
         method: 'POST',
@@ -22,20 +23,20 @@ function SignIn() {
           imagem: '',
           ehAdmin: false
         })
-      });
+      })
       if (res.ok) {
-        setMensagem('Usuário cadastrado com sucesso!');
-        setNome('');
-        setEmail('');
-        setSenha('');
+        setMensagem('Usuário cadastrado com sucesso!')
+        setNome('')
+        setEmail('')
+        setSenha('')
       } else {
         const erro = await res.json();
         setMensagem('Erro: ' + erro.error);
       }
     } catch (err) {
-      setMensagem('Erro ao conectar com o servidor.');
+      setMensagem('Erro ao conectar com o servidor.')
     }
-  };
+  }
 
   return (
     <>
@@ -82,7 +83,7 @@ function SignIn() {
         </form>
       </section>
     </>
-  );
+  )
 }
 
-export default SignIn;
+export default SignIn

@@ -1,16 +1,17 @@
 import Nav from '../components/Nav'
 import Title from '../components/Title'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [mensagem, setMensagem] = useState('');
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('')
+  const [senha, setSenha] = useState('')
+  const [mensagem, setMensagem] = useState('')
+  const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
+    
     try {
       const res = await fetch('http://localhost:3001/usuarios');
       const usuarios = await res.json();
@@ -21,12 +22,12 @@ function Login() {
         localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
         navigate('/profile-edit');
       } else {
-        setMensagem('Email ou senha inválidos.');
+        setMensagem('Email ou senha inválidos.')
       }
     } catch (err) {
-      setMensagem('Erro ao conectar com o servidor.');
+      setMensagem('Erro ao conectar com o servidor.')
     }
-  };
+  }
 
   return (
     <>
@@ -65,7 +66,7 @@ function Login() {
         </form>
       </section>
     </>
-  );
+  )
 }
 
 export default Login;
