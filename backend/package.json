@@ -7,7 +7,8 @@
     "start": "node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "test:db:dev": "ts-node-dev --respawn --transpile-only -e 'import { testDatabaseConnection } from \"./src/config/database\"; testDatabaseConnection().then(() => process.exit(0)).catch(() => process.exit(1));'"
   },
   "keywords": [],
   "author": "",

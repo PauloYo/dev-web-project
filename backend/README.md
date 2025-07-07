@@ -1,88 +1,82 @@
 # Backend - Dev Web Project
 
-API REST em TypeScript com arquitetura organizada por responsabilidades.
+API REST em Node.js/TypeScript para gerenciamento de jogos e listas de usuários.
 
-## 📋 Tecnologias
+## 🚀 Tecnologias
 
-**Base:**
-- **Express** - Framework HTTP minimalista
-- **TypeScript** - Tipagem estática para facilitar manutenção  
-- **ts-node-dev** - Hot reload com TypeScript
-- **dotenv** - Gerenciamento de variáveis de ambiente
+- **Node.js** - Ambiente de execução JavaScript
+- **TypeScript** - Superset do JavaScript com tipagem estática
+- **Express.js** - Framework web para Node.js
+- **PostgreSQL** - Banco de dados relacional
+- **Zod** - Validação de esquemas TypeScript
+- **Aiven** - Serviço de banco de dados PostgreSQL na nuvem
 
-**Validação:**
-- **Zod** - Validação de dados + tipagem (planejado)
+## 📋 Pré-requisitos
 
-**Documentação:**
-- **swagger-ui-express** - Interface da documentação da API (planejado)
+- Node.js 16+ 
+- npm ou yarn
+- PostgreSQL (local ou Aiven)
 
-**Banco de Dados:**
-- **PostgreSQL** - Banco relacional (local ou Aiven Cloud)
-- **pg** - Driver para conexão
+## 🛠️ Instalação
 
-## 🔧 Como Funciona
-
-### `/src/config/database.ts`
-Configuração da conexão PostgreSQL com suporte automático para SSL em produção (Aiven) e pool de conexões.
-
-### `/src/models/index.ts` 
-Interfaces TypeScript para tipagem de todas as entidades do banco e tabelas de relacionamento.
-
-### `/src/services/`
-Classes que contêm a lógica de negócio e operações no banco:
-- `AvaliacaoService` - CRUD de avaliações
-- `UsuarioService` - CRUD de usuários + validação de email
-- `JogoService` - CRUD de jogos + busca com filtros
-- `ListaService` - CRUD de listas + operações especiais
-- `CategoriaService` - CRUD de categorias
-- `PlataformaService` - CRUD de plataformas
-- `ComentarioService` - CRUD de comentários
-
-### `/src/middleware/`
-- `errorHandler.ts` - Captura e trata erros automaticamente (duplicação, FK, etc.)
-- `asyncHandler` - Wrapper para funções async que evita try/catch
-
-### `/src/routes/`
-Endpoints da API REST. Cada arquivo define as rotas HTTP e chama os services correspondentes.
-
-### `/src/app.ts`
-Configuração do Express, middlewares globais e setup das rotas.
-
-## 🚀 Scripts
+### 1. Instalar dependências
 
 ```bash
-npm run dev      # Desenvolvimento com hot reload
-npm run build    # Compila TypeScript
-npm start        # Execução em produção
-npm run clean    # Remove pasta dist
+npm install
 ```
 
-## ⚙️ Configuração
+### 2. Configurar banco de dados
 
-Crie `.env` na raiz:
-```env
-DB_USER=postgres
+#### Opção A: Banco Local (Desenvolvimento)
+
+```bash
+# Copiar arquivo de exemplo
+cp .env.example .env
+
+# Editar .env com suas configurações locais
 DB_HOST=localhost
-DB_NAME=dev_web_project  
-DB_PASSWORD=senha
 DB_PORT=5432
+DB_NAME=dev_web_project
+DB_USER=postgres
+DB_PASSWORD=admin
 DB_SSL=false
-PORT=3001
 ```
 
-Para Aiven Cloud, defina `DB_SSL=true` e use as credenciais fornecidas.
-- **dotenv**: Gerenciamento de variáveis de ambiente
+#### Opção B: Aiven (Produção)
 
-### Validação de Dados
-- **Zod**: Biblioteca de tipagem + validação, ideal para TypeScript
+```bash
+# Usar assistente de configuração
+npm run setup:aiven
 
-### Documentação da API
-- **swagger-ui-express**: Interface web para documentação da API
-- **swagger.yaml**: Definição da documentação em formato YAML
+# OU configurar manualmente
+cp .env.production .env
+# Editar .env com suas credenciais do Aiven
+```
 
-### Banco de Dados
-- **PostgreSQL**: Banco de dados relacional (suporta local e Aiven Cloud)
-- **pg**: Driver PostgreSQL para Node.js
+### 3. Testar conexão
+
+```bash
+# Teste rápido
+npm run test:db:dev
+
+# Validação completa
+npm run validate:aiven
+```
+
+## 🚀 Execução
+
+### Desenvolvimento
+
+```bash
+npm run dev
+```
+
+### Produção
+
+```bash
+npm run build
+npm start
+```
 
 ## 📁 Estrutura do Projeto
 
@@ -90,165 +84,168 @@ Para Aiven Cloud, defina `DB_SSL=true` e use as credenciais fornecidas.
 backend/
 ├── src/
 │   ├── config/
-│   │   └── database.ts        # Configuração do banco de dados
-│   ├── models/
-│   │   └── index.ts           # Interfaces TypeScript dos modelos
-│   ├── routes/                # Rotas da API
-│   │   ├── allRoutes/         # Todas as rotas da API
-│   │   └── index.ts           # Configuração de todas as rotas
-│   ├── app.ts                # Configuração principal do Express
-│   └── server.ts             # Entrada da aplicação
-├── database/
-│   └── fisico.sql            # Script SQL para criação das tabelas
-├── dist/                     # Arquivos JavaScript compilados
-├── .env.example              # Exemplo de variáveis de ambiente
-├── package.json
-├── tsconfig.json
-└── README.md
+│   │   └── database.ts          # Configuração do banco
+│   ├── controllers/             # Controladores das rotas
+│   ├── middleware/              # Middlewares personalizados
+│   ├── models/                  # Modelos e validações Zod
+│   ├── routes/                  # Definição das rotas
+│   ├── services/                # Lógica de negócio
+│   ├── utils/                   # Utilitários
+│   ├── app.ts                   # Configuração do Express
+│   └── server.ts                # Servidor principal
+├── docs/                        # Documentação
+├── certs/                       # Certificados SSL
+├── .env.example                 # Exemplo de configuração
+├── setup-aiven.js               # Assistente de configuração
+└── validate-aiven.js            # Validador de configuração
 ```
 
-## 🔧 Como Cada Seção Funciona
+## 🔐 Configuração SSL/TLS (Aiven)
 
-### `/src/config/database.ts`
-- **Função**: Configuração da conexão com PostgreSQL
-- **Características**:
-  - Suporte tanto para banco local quanto Aiven Cloud
-  - Configuração SSL automática para produção
-  - Pool de conexões para melhor performance
-  - Tratamento de erros de conexão
+### Método 1: Arquivo de Certificado (Recomendado)
 
-### `/src/models/index.ts`
-- **Função**: Definição das interfaces TypeScript
-- **Características**:
-  - Tipagem para todas as entidades do banco
-  - Interfaces para tabelas de relacionamento
-  - Campos opcionais devidamente marcados
+1. Baixe o certificado CA do Aiven
+2. Coloque em `certs/ca.pem`
+3. Configure no `.env`:
 
-### `/src/routes/`
-- **Função**: Definição dos endpoints da API REST
-- **Características**:
-  - Cada arquivo corresponde a uma entidade
-  - Operações CRUD completas
-  - Validação de dados de entrada
-  - Tratamento de erros HTTP
-
-### `/src/app.ts`
-- **Função**: Configuração principal do servidor Express
-- **Características**:
-  - Configuração de middlewares (CORS, JSON parser)
-  - Registro de todas as rotas
-  - Carregamento de variáveis de ambiente
-
-## 🚀 Instalação e Configuração
-
-### 1. Instalar Dependências
 ```bash
-npm install
-```
-
-### 2. Configurar Variáveis de Ambiente
-```bash
-# Copie o arquivo de exemplo
-cp .env.example .env
-
-# Edite as configurações do banco
-nano .env
-```
-
-### 3. Configurações do Banco
-
-#### Para desenvolvimento local:
-```env
-DB_USER=postgres
-DB_HOST=localhost
-DB_NAME=dev_web_project
-DB_PASSWORD=sua_senha
-DB_PORT=5432
-DB_SSL=false
-```
-
-#### Para produção com Aiven:
-```env
-DB_USER=avnadmin
-DB_HOST=seu-host.aivencloud.com
-DB_NAME=defaultdb
-DB_PASSWORD=sua-senha-secreta
-DB_PORT=25060
 DB_SSL=true
+DB_CA_CERT=./certs/ca.pem
 ```
 
-### 4. Executar Scripts SQL
+### Método 2: Conteúdo Direto
+
 ```bash
-# Execute o script de criação das tabelas
-psql -d sua_database -f database/fisico.sql
+DB_SSL=true
+DB_CA_CERT="-----BEGIN CERTIFICATE-----
+MIIDQTCCAimgAwIBAgITBmyfz5m/jAo54vB4ikPmljZbyjANBgkqhkiG9w0BAQsF
+...
+-----END CERTIFICATE-----"
 ```
 
-## 📜 Scripts Disponíveis
+## 🌐 Endpoints da API
 
-- `npm run dev` - Desenvolvimento com hot reload
-- `npm run build` - Compila TypeScript para JavaScript
-- `npm start` - Executa versão compilada (produção)
-- `npm run clean` - Remove pasta dist
+### Usuários
+- `GET /api/usuarios` - Listar usuários
+- `POST /api/usuarios` - Criar usuário
+- `GET /api/usuarios/:id` - Obter usuário
+- `PUT /api/usuarios/:id` - Atualizar usuário
+- `DELETE /api/usuarios/:id` - Deletar usuário
 
-## 🔄 Desenvolvimento
+### Jogos
+- `GET /api/jogos` - Listar jogos
+- `POST /api/jogos` - Criar jogo
+- `GET /api/jogos/:id` - Obter jogo
+- `PUT /api/jogos/:id` - Atualizar jogo
+- `DELETE /api/jogos/:id` - Deletar jogo
 
-Para desenvolver localmente:
+### Listas
+- `GET /api/listas` - Listar listas
+- `POST /api/listas` - Criar lista
+- `GET /api/listas/:id` - Obter lista
+- `PUT /api/listas/:id` - Atualizar lista
+- `DELETE /api/listas/:id` - Deletar lista
+
+### Avaliações
+- `GET /api/avaliacoes` - Listar avaliações
+- `POST /api/avaliacoes` - Criar avaliação
+- `GET /api/avaliacoes/:id` - Obter avaliação
+- `PUT /api/avaliacoes/:id` - Atualizar avaliação
+- `DELETE /api/avaliacoes/:id` - Deletar avaliação
+
+### Comentários
+- `GET /api/comentarios` - Listar comentários
+- `POST /api/comentarios` - Criar comentário
+- `GET /api/comentarios/:id` - Obter comentário
+- `PUT /api/comentarios/:id` - Atualizar comentário
+- `DELETE /api/comentarios/:id` - Deletar comentário
+
+### Categorias
+- `GET /api/categorias` - Listar categorias
+- `POST /api/categorias` - Criar categoria
+- `GET /api/categorias/:id` - Obter categoria
+- `PUT /api/categorias/:id` - Atualizar categoria
+- `DELETE /api/categorias/:id` - Deletar categoria
+
+### Plataformas
+- `GET /api/plataformas` - Listar plataformas
+- `POST /api/plataformas` - Criar plataforma
+- `GET /api/plataformas/:id` - Obter plataforma
+- `PUT /api/plataformas/:id` - Atualizar plataforma
+- `DELETE /api/plataformas/:id` - Deletar plataforma
+
+## 🧪 Scripts Disponíveis
+
 ```bash
+# Desenvolvimento
+npm run dev                    # Servidor em modo desenvolvimento
+npm run build                 # Build para produção
+npm start                     # Servidor em produção
+
+# Banco de Dados
+npm run test:db:dev           # Teste rápido de conexão
+npm run validate:aiven        # Validação completa da configuração
+npm run setup:aiven           # Assistente de configuração
+
+# Utilitários
+npm run clean                 # Limpar diretório dist
+```
+
+## 🔧 Configurações Avançadas
+
+### Pool de Conexões
+
+```bash
+# Conexões
+DB_MAX_CONNECTIONS=10
+DB_MIN_CONNECTIONS=2
+
+# Timeouts
+DB_CONNECTION_TIMEOUT=10000
+DB_IDLE_TIMEOUT=30000
+DB_ACQUIRE_TIMEOUT=60000
+DB_STATEMENT_TIMEOUT=30000
+DB_QUERY_TIMEOUT=30000
+```
+
+### Segurança
+
+- Todas as rotas usam validação Zod
+- Middleware de tratamento de erros
+- Pool de conexões com timeouts
+- SSL/TLS obrigatório em produção
+
+## 🐛 Troubleshooting
+
+### Erro de Conexão
+
+```bash
+# Validar configuração
+npm run validate:aiven
+
+# Verificar logs
 npm run dev
 ```
 
-O servidor estará disponível em `http://localhost:3001`
-
-## 📋 Endpoints da API
-
-### Usuários (`/usuarios`)
-- `GET /usuarios` - Listar todos os usuários
-- `POST /usuarios` - Criar novo usuário
-- `GET /usuarios/:id` - Buscar usuário por ID
-- `PUT /usuarios/:id` - Atualizar usuário completo
-- `DELETE /usuarios/:id` - Deletar usuário
-- `PATCH /usuarios/:id/nome` - Atualizar apenas nome
-- `PATCH /usuarios/:id/imagem` - Atualizar apenas imagem
-- `PATCH /usuarios/:id/descricao` - Atualizar apenas descrição
-
-### Jogos (`/jogos`)
-- `GET /jogos` - Listar jogos (com filtro por nome)
-- `POST /jogos` - Criar novo jogo
-- `GET /jogos/:id` - Buscar jogo por ID
-- `PUT /jogos/:id` - Atualizar jogo
-- `DELETE /jogos/:id` - Deletar jogo
-- `POST /jogos/batch` - Buscar múltiplos jogos por IDs
-
-### Listas (`/listas`)
-- `GET /listas` - Listar listas (com filtro por usuário)
-- `POST /listas` - Criar nova lista
-- `GET /listas/:id` - Buscar lista por ID
-- `PUT /listas/:id` - Atualizar lista
-- `DELETE /listas/:id` - Deletar lista e suas relações
-- `PATCH /listas/:id/nome` - Atualizar apenas nome
-- `PATCH /listas/:id/status` - Atualizar visibilidade
-
-### Avaliações (`/avaliacoes`)
-- `GET /avaliacoes` - Listar avaliações
-- `POST /avaliacoes` - Criar nova avaliação
-- `GET /avaliacoes/:id` - Buscar avaliação por ID
-- `PUT /avaliacoes/:id` - Atualizar avaliação
-- `DELETE /avaliacoes/:id` - Deletar avaliação
-- `PATCH /avaliacoes/:id/nota` - Atualizar apenas nota
-
-### Relacionamentos
-- `/jogo_plataforma` - Associações entre jogos e plataformas
-- `/categoria_jogo` - Associações entre categorias e jogos
-- `/jogo_lista` - Associações entre jogos e listas
-
-## 🏗️ Compilação para Produção
+### Erro SSL
 
 ```bash
-# Compilar TypeScript
-npm run build
+# Verificar certificado
+ls -la certs/
+cat certs/ca.pem
 
-# Executar versão compilada
-npm start
+# Testar sem SSL (apenas desenvolvimento)
+DB_SSL=false
 ```
 
-Os arquivos compilados ficam na pasta `dist/`
+### Pool de Conexões
+
+```bash
+# Reduzir conexões
+DB_MAX_CONNECTIONS=5
+DB_MIN_CONNECTIONS=1
+
+# Aumentar timeouts
+DB_CONNECTION_TIMEOUT=15000
+DB_ACQUIRE_TIMEOUT=90000
+```
