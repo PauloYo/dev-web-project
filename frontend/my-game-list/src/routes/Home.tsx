@@ -2,7 +2,7 @@ import Nav from '../components/Nav'
 import Title from '../components/Title'
 import GameCard from '../components/GameCard'
 
-function App() {
+function Home() {
   return (
     <>
       <Nav />
@@ -14,4 +14,4 @@ function App() {
   )
 }
 
-export default App
+export default Home

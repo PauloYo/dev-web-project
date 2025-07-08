@@ -94,6 +94,8 @@ curl -X PUT http://localhost:3001/comentarios/1 -H "Content-Type: application/js
 
 curl -X DELETE http://localhost:3001/comentarios/1
 
+curl -X PATCH http://localhost:3001/comentarios/1/descricao -H "Content-Type: application/json" -d "{\"descricao\":\"Nova descrição do comentário\"}"
+
 #####
 
 LISTA
@@ -107,6 +109,8 @@ curl http://localhost:3001/listas/1
 curl -X PUT http://localhost:3001/listas/1 -H "Content-Type: application/json" -d "{\"nome\":\"Favoritos Atualizada\",\"ehPublico\":false,\"fk_Usuario_id\":1}"
 
 curl -X DELETE http://localhost:3001/listas/1
+
+curl -X PATCH http://localhost:3001/listas/1/nome -H "Content-Type: application/json" -d "{\"nome\":\"Novo Nome da Lista\"}"
 
 #####
 

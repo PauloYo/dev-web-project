@@ -1,0 +1,8 @@
+# Ignorar certificados por segurança
+*.pem
+*.crt
+*.key
+*.cert
+
+# Manter a estrutura da pasta
+!.gitkeep
