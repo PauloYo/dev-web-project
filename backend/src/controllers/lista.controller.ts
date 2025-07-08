@@ -15,11 +15,15 @@ export class ListaController {
     }
 
     static async getAll(req: Request, res: Response) {
-        const { fk_Usuario_id } = req.query;
-        const listas = await ListaService.getAll(fk_Usuario_id ? Number(fk_Usuario_id) : undefined);
-        res.json(listas);
-    }
+    const { fk_Usuario_id, ehpublico } = req.query;
 
+    const usuarioId = fk_Usuario_id ? Number(fk_Usuario_id) : undefined;
+    const isPublic = ehpublico === 'true' ? true : ehpublico === 'false' ? false : undefined;
+
+    const listas = await ListaService.getAll(usuarioId, isPublic);
+    res.json(listas);
+    }
+    
     static async getById(req: Request, res: Response) {
         const id = Number(res.locals.params.id);
         const lista = await ListaService.getById(id);

@@ -11,14 +11,29 @@ export class ListaService {
     return result.rows[0];
   }
 
-  static async getAll(fk_Usuario_id?: number): Promise<Lista[]> {
-    if (fk_Usuario_id) {
-      const result = await pool.query('SELECT * FROM LISTA WHERE fk_Usuario_id = $1', [fk_Usuario_id]);
-      return result.rows;
+  static async getAll(fk_Usuario_id?: number, ehPublico?: boolean): Promise<Lista[]> {
+    let query = 'SELECT * FROM LISTA';
+    const conditions: string[] = [];
+    const params: any[] = [];
+
+    if (fk_Usuario_id !== undefined) {
+      conditions.push(`fk_usuario_id = $${params.length + 1}`);
+      params.push(fk_Usuario_id);
     }
-    const result = await pool.query('SELECT * FROM LISTA');
+
+    if (ehPublico !== undefined) {
+      conditions.push(`ehPublico = $${params.length + 1}`);
+      params.push(ehPublico);
+    }
+
+    if (conditions.length > 0) {
+      query += ' WHERE ' + conditions.join(' AND ');
+    }
+
+    const result = await pool.query(query, params);
     return result.rows;
   }
+
 
   static async getById(id: number): Promise<Lista | null> {
     const result = await pool.query('SELECT * FROM LISTA WHERE id = $1', [id]);

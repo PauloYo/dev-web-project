@@ -4,7 +4,8 @@ import { validateRequest } from '../../middleware/validateRequest';
 import { CreateUsuarioSchema } from '../../models/usuario.model';
 import { IdParamSchema } from '../../models/validation.param.model';
 import { UsuarioController } from '../../controllers/usuario.controller';
-import { ImagemSchema } from '../../models/validation.body.model';
+import { ImagemSchema, NomeSchema, DescricaoSchema } from '../../models/validation.body.model';
+
 
 const router = Router();
 
@@ -50,7 +51,8 @@ router.patch(
 router.patch(
   '/:id/descricao',
   validateRequest({
-    params: IdParamSchema
+    params: IdParamSchema,
+    body: DescricaoSchema
   }),
   asyncHandler(UsuarioController.updateDescricao)
 );
@@ -58,7 +60,8 @@ router.patch(
 router.patch(
   '/:id/nome',
   validateRequest({
-    params: IdParamSchema
+    params: IdParamSchema,
+    body: NomeSchema
   }),
   asyncHandler(UsuarioController.updateNome)
 );

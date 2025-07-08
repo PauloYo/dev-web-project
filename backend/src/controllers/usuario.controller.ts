@@ -31,7 +31,7 @@ export class UsuarioController {
     }
 
     static async update(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const data = res.locals.body as CreateUsuarioDTO;
         const usuario = await UsuarioService.update(id, data);
 
@@ -42,7 +42,7 @@ export class UsuarioController {
     }
 
     static async updateImagem(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const { imagem }: { imagem: string } = res.locals.body;
         const usuario = await UsuarioService.updateImagem(id, imagem);
 
@@ -53,7 +53,7 @@ export class UsuarioController {
     }
 
     static async updateDescricao(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const { descricao }: { descricao: string } = res.locals.body;
         const usuario = await UsuarioService.updateDescricao(id, descricao);
 
@@ -64,7 +64,7 @@ export class UsuarioController {
     }
 
     static async updateNome(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const { nome }: { nome: string } = res.locals.body;
         const usuario = await UsuarioService.updateNome(id, nome);
 
@@ -75,7 +75,7 @@ export class UsuarioController {
     }
 
     static async delete(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const deleted = await UsuarioService.delete(id);
 
         if (!deleted) {
