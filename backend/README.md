@@ -178,7 +178,7 @@ MIIDQTCCAimgAwIBAgITBmyfz5m/jAo54vB4ikPmljZbyjANBgkqhkiG9w0BAQsF
 
 ```bash
 # Desenvolvimento
-npm run dev                    # Servidor em modo desenvolvimento
+npm run dev                   # Servidor em modo desenvolvimento
 npm run build                 # Build para produção
 npm start                     # Servidor em produção
 
