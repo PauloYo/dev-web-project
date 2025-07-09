@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { asyncHandler } from '../../middleware/errorHandler';
 import { validateRequest } from '../../middleware/validateRequest';
 import { CreateJogoSchema } from '../../models/jogo.model';
-import { IdParamSchema } from '../../models/validation.param.model';
+import { GameNameSchema, IdParamSchema } from '../../models/validation.param.model';
 import { JogoController } from '../../controllers/jogo.controller';
 
 const router = Router();
@@ -21,16 +21,19 @@ router.get(
 );
 
 router.get(
-  '/details',
-  asyncHandler(JogoController.getAllWithDetails) // Assuming this method exists in JogoController
-)
-
-router.get(
   '/:id',
   validateRequest({
     params: IdParamSchema
   }),
   asyncHandler(JogoController.getById)
+);
+
+router.get(
+  '/:name',
+  validateRequest({
+    params: GameNameSchema
+  }),
+  asyncHandler(JogoController.getByName)
 );
 
 router.put(

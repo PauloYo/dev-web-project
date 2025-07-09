@@ -1,3 +1,4 @@
+-- SQLBook: Code
 /* Lógico: */
 
 CREATE TABLE CATEGORIA (

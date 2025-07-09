@@ -24,6 +24,17 @@ export class CategoriaController {
         res.json(categoria);
     }
 
+    static async getByIds(req: Request, res: Response) {
+        const { ids } = res.locals.body;
+        const categorias = await CategoriaService.getByIds(ids);
+        
+        if (categorias.length === 0) {
+            return res.status(404).json({ error: 'Nenhuma categoria encontrada para os IDs fornecidos' });
+        }
+        
+        res.json(categorias);
+    }
+
     static async update(req: Request, res: Response) {
         const { id } = res.locals.params;
         const { descricao } = res.locals.body;

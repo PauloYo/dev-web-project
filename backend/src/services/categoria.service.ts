@@ -20,6 +20,17 @@ export class CategoriaService {
     return result.rows[0] || null;
   }
 
+  static async getByIds(ids: number[]): Promise<Categoria[]> {
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      throw new Error('IDs inválidos');
+    }
+    const result = await pool.query(
+      'SELECT * FROM CATEGORIA WHERE id = ANY($1::int[])',
+      [ids]
+    );
+    return result.rows;
+  }
+
   static async update(id: number, descricao: string): Promise<Categoria | null> {
     const result = await pool.query(
       'UPDATE CATEGORIA SET descricao=$1 WHERE id=$2 RETURNING *',

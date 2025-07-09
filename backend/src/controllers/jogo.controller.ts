@@ -19,11 +19,6 @@ export class JogoController {
         res.json(jogos);
     }
 
-    static async getAllWithDetails(req: Request, res: Response) {
-        const jogos = await JogoService.getAllWithDetails();
-        res.json(jogos);
-    }
-
     static async getById(req: Request, res: Response) {
         const id = Number(res.locals.id);
         const jogo = await JogoService.getById(id);
@@ -33,6 +28,18 @@ export class JogoController {
         }
         
         res.json(jogo);
+    }
+
+    static async getByName(req: Request, res: Response) {
+        const nome = res.locals.query.nome as string;
+        if (!nome) {
+            return res.status(400).json({ error: 'Nome do jogo é obrigatório' });
+        }
+        const jogos = await JogoService.getByName(nome);
+        if (jogos.length === 0) {
+            return res.status(404).json({ error: 'Nenhum jogo encontrado com esse nome' });
+        }
+        res.json(jogos);
     }
 
     static async update(req: Request, res: Response) {

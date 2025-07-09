@@ -5,7 +5,5 @@ export const CreateListaSchema = z.object({
     ehPublico: z.boolean(),
     fk_Usuario_id: z.number().int(),
 })
-
 export type CreateListaDTO = z.infer<typeof CreateListaSchema>;
-
 export type Lista = CreateListaDTO & { id: number };

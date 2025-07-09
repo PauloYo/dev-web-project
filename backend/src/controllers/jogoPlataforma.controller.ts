@@ -14,6 +14,17 @@ export class JogoPlataformaController {
         res.json(jogosPlataformas);
     }
 
+    static async getByJogoId(req: Request, res: Response) {
+        const fk_Jogo_id = Number(res.locals.id);
+        const jogosPlataformas = await JogoPlataformaService.getByJogoId(fk_Jogo_id);
+        
+        if (jogosPlataformas.length === 0) {
+            return res.status(404).json({ error: 'Nenhuma relação encontrada para o jogo' });
+        }
+        
+        res.json(jogosPlataformas);
+    }
+
     static async delete(req: Request, res: Response) {
         const data = res.locals.body as CreateJogoPlataformaDTO;
         const deleted = await JogoPlataformaService.delete(data);

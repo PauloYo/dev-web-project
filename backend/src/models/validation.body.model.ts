@@ -1,13 +1,11 @@
 import { z } from 'zod';
 
-/**
- * Avaliação
- */
-
+// Schema para body da requisição de atualizar nota
 export const NotaSchema = z.object({
     nota: z.number().min(0).max(10)
 });
 
+// Schema para body da requisição de atualizar imagem
 export const ImagemSchema = z.object({
   imagem: z.string()
 });
@@ -18,12 +16,6 @@ export const UpdateStatusSchema = z.object({
 });
 
 // Schema para body da requisição de atualizar nome
-export const UpdateNomeSchema = z.object({
-  nome: z.string().min(1)
-});
-
-
-// Schema para body da requisição de atualizar nome
 export const NomeSchema = z.object({
   nome: z.string().min(1, 'Nome não pode estar vazio'),
 });
@@ -31,4 +23,10 @@ export const NomeSchema = z.object({
 // Schema para body da requisição de atualizar descrição
 export const DescricaoSchema = z.object({
   descricao: z.string().min(1, 'Descrição não pode estar vazia'),
+});
+
+export const IdsBodySchema = z.object({
+  ids: z.array(z.number().int().positive())
+}).refine(data => data.ids.length > 0, {
+  message: 'A lista de IDs não pode estar vazia'
 });

@@ -4,7 +4,7 @@ import { validateRequest } from '../../middleware/validateRequest';
 import { CreateListaSchema } from '../../models/lista.model';
 import { IdParamSchema } from '../../models/validation.param.model';
 import { ListaController } from '../../controllers/lista.controller';
-import { UpdateStatusSchema, UpdateNomeSchema } from '../../models/validation.body.model';
+import { UpdateStatusSchema, NomeSchema } from '../../models/validation.body.model';
 
 const router = Router();
 
@@ -42,7 +42,7 @@ router.patch(
   '/:id/nome',
   validateRequest({
     params: IdParamSchema,
-    body: UpdateNomeSchema
+    body: NomeSchema
   }),
   asyncHandler(ListaController.updateNome)
 );
