@@ -2,54 +2,39 @@ import React, { useEffect, useState } from 'react';
 import Nav from '../components/shared/Nav';
 import Title from '../components/shared/Title';
 import logoImage from '../assets/logo-image.png';
-
-interface Categoria {
-  id: number;
-  descricao: string;
-}
-
-interface Plataforma {
-  id: number;
-  descricao: string;
-}
-
-interface Jogo {
-  id: number;
-  nome: string;
-  descricao: string;
-  imagem?: string;
-  categorias?: Categoria[];
-  plataformas?: Plataforma[];
-}
+import { JogosService } from '../services/jogos';
+import type { JogoDetails } from '../types/internal';
 
 
 function Games() {
-  const [jogos, setJogos] = useState<Jogo[]>([]);
+  const [jogos, setJogos] = useState<JogoDetails[]>([]);
   const [mensagem, setMensagem] = useState('');
 
   useEffect(() => {
     const fetchJogos = async () => {
       try {
-        const res = await fetch('http://localhost:3001/jogos/details');
-        if (!res.ok) throw new Error('Erro ao buscar jogos');
-        const data = await res.json();
-        setJogos(data.map((j: any) => ({
-          id: j.jogo_id,
-          nome: j.jogo_nome,
+        const jogos = await JogosService.getAllWithDetails();
+        if (!jogos || jogos.length === 0) {
+          setMensagem('Nenhum jogo encontrado.');
+          return;
+        }
+        setJogos(jogos.map((j: JogoDetails) => ({
+          id: j.id,
+          nome: j.nome,
           descricao: j.descricao,
           imagem: j.imagem,
-          categorias: j.categorias || [],
-          plataformas: j.plataformas || []
+          categorias: j.categorias,
+          plataformas: j.plataformas
       })));
       } catch (err) {
-        setMensagem('Erro ao carregar jogos.');
+        setMensagem(`Erro ao carregar jogos.\n${err}`);
       }
     };
 
     fetchJogos();
   }, []);
 
-  const getImagemJogo = (jogo: Jogo) => {
+  const getImagemJogo = (jogo: JogoDetails) => {
     if (jogo.imagem && jogo.imagem.startsWith('data:image/')) {
       return jogo.imagem;
     } else if (jogo.imagem && jogo.imagem.trim() !== '') {
@@ -66,7 +51,7 @@ function Games() {
         <Title text="Lista de Jogos" size="text-[48px]" />
         {mensagem && <p className="text-red-500">{mensagem}</p>}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl w-full">
-          {jogos.map((jogo: Jogo) => (
+          {jogos.map((jogo: JogoDetails) => (
             <div key={jogo.id} className="bg-gray-800 p-4 rounded-lg flex flex-col items-center">
               <img
                 src={getImagemJogo(jogo)}

@@ -20,6 +20,17 @@ export class PlataformaService {
     return result.rows[0] || null;
   }
 
+  static async getByIds(ids: number[]): Promise<Plataforma[]> {
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      throw new Error('IDs inválidos');
+    }
+    const result = await pool.query(
+      'SELECT * FROM PLATAFORMA WHERE id = ANY($1::int[])',
+      [ids]
+    );
+    return result.rows;
+  }
+
   static async update(id: number, descricao: string): Promise<Plataforma | null> {
     const result = await pool.query(
       'UPDATE PLATAFORMA SET descricao=$1 WHERE id=$2 RETURNING *',

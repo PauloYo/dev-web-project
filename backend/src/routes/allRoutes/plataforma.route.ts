@@ -4,6 +4,7 @@ import { validateRequest } from '../../middleware/validateRequest';
 import { CreatePlataformaSchema } from '../../models/plataforma.model';
 import { IdParamSchema } from '../../models/validation.param.model';
 import { PlataformaController } from '../../controllers/plataforma.controller';
+import { IdsBodySchema } from '../../models/validation.body.model';
 
 const router = Router();
 
@@ -27,6 +28,14 @@ router.get(
   }),
   asyncHandler(PlataformaController.getById)
 );
+
+router.get(
+  '/batch',
+  validateRequest({
+    body: IdsBodySchema
+  }),
+  asyncHandler(PlataformaController.getByIds)
+)
 
 router.put(
   '/:id',

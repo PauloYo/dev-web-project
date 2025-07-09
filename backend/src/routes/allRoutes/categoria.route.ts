@@ -3,6 +3,7 @@ import { asyncHandler } from '../../middleware/errorHandler';
 import { validateRequest } from '../../middleware/validateRequest';
 import { CreateCategoriaSchema } from '../../models/categoria.model';
 import { IdParamSchema } from '../../models/validation.param.model';
+import { IdsBodySchema } from '../../models/validation.body.model';
 import { CategoriaController } from '../../controllers/categoria.controller';
 
 const router = Router();
@@ -27,6 +28,14 @@ router.get(
   }),
   asyncHandler(CategoriaController.getById)
 );
+
+router.get(
+  '/batch',
+  validateRequest({
+    body: IdsBodySchema
+  }),
+  asyncHandler(CategoriaController.getByIds)
+)
 
 router.put(
   '/:id',

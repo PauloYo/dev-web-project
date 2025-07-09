@@ -24,6 +24,17 @@ export class PlataformaController {
         res.json(plataforma);
     }
 
+    static async getByIds(req: Request, res: Response) {
+        const { ids } = res.locals.body;
+        const plataformas = await PlataformaService.getByIds(ids);
+
+        if (plataformas.length === 0) {
+            return res.status(404).json({ error: 'Nenhuma plataforma encontrada para os IDs fornecidos' });
+        }
+
+        res.json(plataformas);
+    }
+
     static async update(req: Request, res: Response) {
         const { id } = res.locals.params;
         const { descricao } = res.locals.body;

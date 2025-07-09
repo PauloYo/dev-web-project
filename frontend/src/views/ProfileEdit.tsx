@@ -1,7 +1,8 @@
 import Nav from '../components/shared/Nav'
 import Title from '../components/shared/Title'
 import React, { useState } from 'react';
-import UserIcon from '../assets/user-icon.png'; // ajuste o caminho se necessário
+import UserIcon from '../assets/user-icon.png';
+import { UsuariosService } from '../services/usuario';
 
 function ProfileEdit() {
   const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado') || '{}');
@@ -24,18 +25,13 @@ function ProfileEdit() {
     return UserIcon;
   };
 
-  const handleUpdate = async (campo: string, valor: string) => {
+  const handleUpdate = async (campo: 'nome' | 'descricao' | 'imagem', valor: string) => {
     try {
-      const res = await fetch(`http://localhost:3001/usuarios/${userId}/${campo}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ [campo]: valor })
-      });
-      if (res.ok) {
+      const res = await UsuariosService.update(userId, campo, valor);
+      if (res) {
         setMensagem(`Campo ${campo} atualizado com sucesso!`);
       } else {
-        const erro = await res.json();
-        setMensagem('Erro: ' + erro.error);
+        setMensagem(`Erro ao atualizar o campo ${campo}.`);
       }
     } catch (err) {
       setMensagem('Erro ao conectar com o servidor.');
@@ -61,22 +57,15 @@ function ProfileEdit() {
     reader.onloadend = async () => {
       try {
         const imagemString = reader.result as string;
-
-        const res = await fetch(`http://localhost:3001/usuarios/${userId}/imagem`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ imagem: imagemString })
-        });
-        if (res.ok) {
-          const usuarioAtualizado = await res.json();
+        const usuarioAtualizado = await UsuariosService.update(userId, 'imagem', imagemString);
+        if (usuarioAtualizado) {
           // Atualiza o localStorage com o novo usuário
           localStorage.setItem('usuarioLogado', JSON.stringify(usuarioAtualizado));
           setMensagem('Imagem atualizada com sucesso!');
           // Opcional: forçar recarregar a página ou o estado
           window.location.reload();
         } else {
-          const erro = await res.json();
-          setMensagem('Erro: ' + erro.error);
+          setMensagem('Erro ao atualizar a imagem.');
         }
       } catch (err) {
         setMensagem('Erro ao conectar com o servidor.');

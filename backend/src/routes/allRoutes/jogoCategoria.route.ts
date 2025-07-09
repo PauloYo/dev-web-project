@@ -2,7 +2,8 @@ import { Router } from 'express';
 import { asyncHandler } from '../../middleware/errorHandler';
 import { validateRequest } from '../../middleware/validateRequest';
 import { CreateCategoriaJogoSchema } from '../../models/categoriaJogo.model';
-import { CategoriaJogoController } from '../../controllers/categoriaJogo.controller';
+import { JogoCategoriaController } from '../../controllers/jogoCategoria.controller';
+import { IdParamSchema } from '../../models/validation.param.model';
 
 const router = Router();
 
@@ -11,20 +12,28 @@ router.post(
   validateRequest({
     body: CreateCategoriaJogoSchema
   }),
-  asyncHandler(CategoriaJogoController.create)
+  asyncHandler(JogoCategoriaController.create)
 );
 
 router.get(
   '/',
-  asyncHandler(CategoriaJogoController.getAll)
+  asyncHandler(JogoCategoriaController.getAll)
 );
+
+router.get(
+  '/jogo/:fk_Jogo_id',
+  validateRequest({
+    params: IdParamSchema
+  }),
+  asyncHandler(JogoCategoriaController.getByJogoId)
+)
 
 router.delete(
   '/',
   validateRequest({
     body: CreateCategoriaJogoSchema
   }),
-  asyncHandler(CategoriaJogoController.delete)
+  asyncHandler(JogoCategoriaController.delete)
 );
 
 export default router;

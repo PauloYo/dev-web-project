@@ -16,6 +16,14 @@ export class JogoPlataformaService {
         return result.rows;
     }
 
+    static async getByJogoId(fk_Jogo_id: number) {
+        const result = await pool.query(
+            'SELECT * FROM JOGO_PLATAFORMA WHERE fk_Jogo_id = $1',
+            [fk_Jogo_id]
+        );
+        return result.rows;
+    }
+
     static async delete(data: CreateJogoPlataformaDTO): Promise<boolean> {
         const { fk_Plataforma_id, fk_Jogo_id } = data;
         const result = await pool.query(

@@ -1,1 +1,0 @@
-type Platform = "playstation" | "nintendo" | "xbox" | "computer"

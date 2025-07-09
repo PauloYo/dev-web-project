@@ -2,6 +2,7 @@ import Nav from '../components/shared/Nav'
 import Title from '../components/shared/Title'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { UsuariosService } from '../services/usuario'
 
 function Login() {
   const [email, setEmail] = useState('')
@@ -13,8 +14,7 @@ function Login() {
     e.preventDefault()
     
     try {
-      const res = await fetch('http://localhost:3001/usuarios');
-      const usuarios = await res.json();
+      const usuarios = await UsuariosService.getAll();
       const usuario = usuarios.find(
         (u: any) => u.email === email && u.senha === senha
       );
