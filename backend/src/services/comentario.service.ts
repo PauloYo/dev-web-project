@@ -21,6 +21,11 @@ export class ComentarioService {
     return result.rows[0] || null;
   }
 
+  static async getByUserId(userId: number, gameId: number): Promise<Comentario | ''> {
+    const result = await pool.query('SELECT * FROM COMENTARIO JOIN AVALIACAO ON (COMENTARIO.fk_avaliacao_id = AVALIACAO.id) WHERE AVALIACAO.fk_usuario_id = $1 AND AVALIACAO.fk_jogo_id = $2', [userId, gameId]);
+    return result.rows[0] || '';
+  }
+
   static async update(id: number, data: CreateComentarioDTO): Promise<Comentario | null> {
     const { descricao, fk_Avaliacao_id } = data;
     const result = await pool.query(

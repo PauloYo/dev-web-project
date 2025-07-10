@@ -15,7 +15,6 @@ function Games() {
     const fetchJogos = async () => {
       try {
         const jogos = await JogosService.getAllWithDetails();
-        console.log(jogos)
         if (!jogos || jogos.length === 0) {
           setMensagem('Nenhum jogo encontrado.');
           return;
@@ -29,7 +28,7 @@ function Games() {
           plataformas: j.plataformas,
           rating: j.rating,
           totalUserRatings: j.totalUserRatings,
-      })));
+        })));
       } catch (err) {
         setMensagem(`Erro ao carregar jogos.\n${err}`);
       }

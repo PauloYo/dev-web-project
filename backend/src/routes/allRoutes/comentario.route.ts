@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { asyncHandler } from '../../middleware/errorHandler';
 import { validateRequest } from '../../middleware/validateRequest';
 import { CreateComentarioSchema } from '../../models/comentario.model';
-import { IdParamSchema } from '../../models/validation.param.model';
+import { ComentarioIdParamSchema, IdParamSchema } from '../../models/validation.param.model';
 import { ComentarioController } from '../../controllers/comentario.controller';
 
 const router = Router();
@@ -18,6 +18,14 @@ router.post(
 router.get(
   '/',
   asyncHandler(ComentarioController.getAll)
+);
+
+router.get(
+  '/usuario/:userId/:gameId',
+  validateRequest({
+    params: ComentarioIdParamSchema
+  }),
+  asyncHandler(ComentarioController.getByUserId)
 );
 
 router.get(

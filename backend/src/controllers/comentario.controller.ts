@@ -20,7 +20,7 @@ export class ComentarioController {
     }
 
     static async getById(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const comentario = await ComentarioService.getById(id);
 
         if (!comentario) {
@@ -30,8 +30,20 @@ export class ComentarioController {
         res.json(comentario);
     }
 
+    static async getByUserId(req: Request, res: Response) {
+        const userId = Number(res.locals.params.userId);
+        const gameId = Number(res.locals.params.gameId);
+        const comentario = await ComentarioService.getByUserId(userId, gameId);
+
+        if (!comentario) {
+            return res.status(404).json({ error: 'Comentário não encontrado' });
+        }
+
+        res.json(comentario);
+    }
+
     static async update(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const data = res.locals.body as CreateComentarioDTO;
         const comentario = await ComentarioService.update(id, data);
 
@@ -42,7 +54,7 @@ export class ComentarioController {
     }
 
     static async delete(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const deleted = await ComentarioService.delete(id);
 
         if (!deleted) {

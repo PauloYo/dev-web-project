@@ -7,7 +7,7 @@ type CardSize = 'large' | 'medium';
 
 type GameRatingProps = {
   rating: number
-  quantity: number
+  quantity?: number
   size?: CardSize
 }
 
@@ -33,7 +33,7 @@ function GameRating({ rating, quantity, size = 'large' }: GameRatingProps) {
         emptyIcon={<FontAwesomeIcon icon={faStarOutlined} className='text-4xl' fontSize='inherit' color="#6a7282" />}
         readOnly
       />
-      <h3 className="text-base text-gray-500">({quantity})</h3>
+      {quantity && <h3 className="text-base text-gray-500">({quantity})</h3>}
     </div>
   )
 }

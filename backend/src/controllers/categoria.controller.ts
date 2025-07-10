@@ -14,7 +14,7 @@ export class CategoriaController {
     }
 
     static async getById(req: Request, res: Response) {
-        const { id } = res.locals.params;
+        const id = Number(res.locals.params.id);
         const categoria = await CategoriaService.getById(id);
         
         if (!categoria) {
@@ -36,7 +36,7 @@ export class CategoriaController {
     }
 
     static async update(req: Request, res: Response) {
-        const { id } = res.locals.params;
+        const id = Number(res.locals.params.id);
         const { descricao } = res.locals.body;
         const categoria = await CategoriaService.update(id, descricao);
         
@@ -48,7 +48,7 @@ export class CategoriaController {
     }
 
     static async delete(req: Request, res: Response) {
-        const { id } = res.locals.params;
+        const id = Number(res.locals.params.id);
         const deleted = await CategoriaService.delete(id);
         
         if (!deleted) {

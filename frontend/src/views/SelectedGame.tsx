@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 
 import Nav from '../components/shared/Nav';
 import Footer from '../components/shared/Footer';
-import Comentario from '../components/Comentario'
+import Avaliacao from '../components/Avaliacao'
 import GameCardDetails from '../components/GameCardDetails';
 
 import { isLogged } from '../utils/login'
@@ -43,7 +43,7 @@ function SelectedGame() {
       <Nav />
       <section className="flex flex-col items-center gap-6 mt-10 px-4 text-white">
         <GameCardDetails game={jogo} width='1000px' height='400px' />
-        {isLogged() ? <Comentario /> : ''}
+        {isLogged() ? <Avaliacao gameId={jogo.id} /> : ''}
       </section>
       <Footer />
     </>
