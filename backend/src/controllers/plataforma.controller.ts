@@ -14,7 +14,7 @@ export class PlataformaController {
     }
 
     static async getById(req: Request, res: Response) {
-        const { id } = res.locals.params;
+        const id = Number(res.locals.params.id);
         const plataforma = await PlataformaService.getById(id);
         
         if (!plataforma) {
@@ -36,7 +36,7 @@ export class PlataformaController {
     }
 
     static async update(req: Request, res: Response) {
-        const { id } = res.locals.params;
+        const id = Number(res.locals.params.id);
         const { descricao } = res.locals.body;
         const plataforma = await PlataformaService.update(id, descricao);
         
@@ -48,7 +48,7 @@ export class PlataformaController {
     }
 
     static async delete(req: Request, res: Response) {
-        const { id } = res.locals.params;
+        const id = Number(res.locals.params.id);
         const deleted = await PlataformaService.delete(id);
         
         if (!deleted) {

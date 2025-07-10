@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import Nav from '../components/shared/Nav';
 import Title from '../components/shared/Title';
 
@@ -24,7 +26,7 @@ interface ListaPublica {
 
 function PublicLists() {
   const [listasPublicas, setListasPublicas] = useState<ListaPublica[]>([]);
-  const [mensagem, setMensagem] = useState('');
+  const [mensagem, setMensagem] = useState('Carregando...');
 
   useEffect(() => {
     fetchListasPublicas();
@@ -94,9 +96,11 @@ function PublicLists() {
               {lista.jogos.length > 0 ? (
                 <ul className="flex flex-wrap gap-3">
                   {lista.jogos.map(jogo => (
-                    <li key={jogo.id} className="bg-blue-700 text-white px-3 py-1 rounded">
-                      {jogo.nome}
-                    </li>
+                    <Link to={`/selected-game/${jogo.id}`} onClick={() => localStorage.setItem('selectedGame', JSON.stringify(jogo))}>
+                      <li key={jogo.id} className="bg-blue-700 text-white px-3 py-1 rounded">
+                        {jogo.nome}
+                      </li>
+                    </Link>
                   ))}
                 </ul>
               ) : (

@@ -29,6 +29,9 @@ function ProfileEdit() {
     try {
       const res = await UsuariosService.update(userId, campo, valor);
       if (res) {
+        localStorage.setItem('usuarioLogado', JSON.stringify(res));
+      }
+      if (res) {
         setMensagem(`Campo ${campo} atualizado com sucesso!`);
       } else {
         setMensagem(`Erro ao atualizar o campo ${campo}.`);

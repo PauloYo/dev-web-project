@@ -1,6 +1,7 @@
 import type { PlataformasOptions } from "../../types/internal"
 
-import { faAndroid, faApple, faLinux, faNeos, faPlaystation, faWindows, faXbox } from "@fortawesome/free-brands-svg-icons"
+import { faAndroid, faApple, faLinux, faPlaystation, faWindows, faXbox } from "@fortawesome/free-brands-svg-icons"
+import { faN } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 type PlatformsProps = {
@@ -10,7 +11,7 @@ type PlatformsProps = {
 function Platforms({ platforms }: PlatformsProps) {
   const platformIcons = {
     'playstation': faPlaystation,
-    'nintendo': faNeos,
+    'nintendo': faN,
     'xbox': faXbox,
     'windows': faWindows,
     'macos': faApple,
@@ -19,8 +20,13 @@ function Platforms({ platforms }: PlatformsProps) {
   }
 
   return platforms.map((platform) => (
-      <FontAwesomeIcon icon={platformIcons[platform]} />
-    ))
+    <FontAwesomeIcon
+      key={platform}
+      icon={platformIcons[platform]}
+      title={platform.charAt(0).toUpperCase() + platform.slice(1)}
+      style={{ marginRight: 3 }}
+    />
+  ))
 }
 
 export default Platforms

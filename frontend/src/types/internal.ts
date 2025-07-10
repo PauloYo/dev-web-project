@@ -5,4 +5,7 @@ export type PlataformasOptions = "playstation" | "nintendo" | "xbox" | "windows"
 export type JogoDetails = Jogo & {
     plataformas: Plataforma[];
     categorias: Categoria[];
+    ranking?: number;
+    rating: number;
+    totalUserRatings: number;
 };

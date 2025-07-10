@@ -37,6 +37,22 @@ router.get(
   asyncHandler(JogoController.getByName)
 );
 
+router.get(
+  '/:id/rating',
+  validateRequest({
+    params: IdParamSchema
+  }),
+  asyncHandler(JogoController.getRatingById)
+);
+
+router.get(
+  '/:id/total-user-ratings',
+  validateRequest({
+    params: IdParamSchema
+  }),
+  asyncHandler(JogoController.getTotalUserRatingsById)
+);
+
 router.put(
   '/:id',
   validateRequest({

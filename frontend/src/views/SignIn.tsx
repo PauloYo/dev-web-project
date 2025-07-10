@@ -1,6 +1,7 @@
 import Nav from '../components/shared/Nav'
 import Title from '../components/shared/Title'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 function SignIn() {
   const [nome, setNome] = useState('')
@@ -80,6 +81,12 @@ function SignIn() {
           {mensagem && (
             <span className="text-white text-center">{mensagem}</span>
           )}
+          <p className="text-center text-white mt-2">
+          Já tem uma conta?{' '}
+            <Link to="/login" className="text-blue-400 hover:underline">
+              Clique aqui!
+            </Link>
+          </p>
         </form>
       </section>
     </>

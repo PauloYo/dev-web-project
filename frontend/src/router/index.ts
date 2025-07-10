@@ -9,6 +9,7 @@ import Games from "../views/Games"
 import CreateList from "../views/CreateList"
 import ProfileEdit from "../views/ProfileEdit"
 import SelectedGame from "../views/SelectedGame"
+import Profile from "../views/Profile"
 
 
 export const router = createBrowserRouter([
@@ -46,5 +47,8 @@ export const router = createBrowserRouter([
   },
   { path: '/selected-game/:id',
     Component: SelectedGame
+  },
+  { path: '/profile',
+    Component: Profile
   }
 ])

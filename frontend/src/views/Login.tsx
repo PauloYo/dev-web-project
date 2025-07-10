@@ -1,7 +1,7 @@
 import Nav from '../components/shared/Nav'
 import Title from '../components/shared/Title'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { UsuariosService } from '../services/usuario'
 
 function Login() {
@@ -20,7 +20,7 @@ function Login() {
       );
       if (usuario) {
         localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
-        navigate('/profile-edit');
+        navigate('/profile');
       } else {
         setMensagem('Email ou senha inválidos.')
       }
@@ -63,6 +63,12 @@ function Login() {
         {mensagem && (
           <span className="text-white text-center">{mensagem}</span>
         )}
+        <p className="text-center text-white mt-2">
+          Não tem uma conta?{' '}
+          <Link to="/sign-in" className="text-blue-400 hover:underline">
+            Cadastre-se
+          </Link>
+        </p>
       </form>
     </section>
     </>

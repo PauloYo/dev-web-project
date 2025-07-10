@@ -47,44 +47,64 @@ export class JogosService {
         return response.json();
     }
 
+    static async getRatingById(id: number): Promise<number> {
+        const response = await fetch(`${this.BASE_URL}/${id}/rating`);
+        if (!response.ok) {
+            throw new Error('Erro ao buscar rating do jogo');
+        }
+        const data = await response.json();
+        return data.rating;
+    }
+
+    static async getTotalUserRatingsById(id: number): Promise<number> {
+        const response = await fetch(`${this.BASE_URL}/${id}/total-user-ratings`);
+        if (!response.ok) {
+            throw new Error('Erro ao buscar total de avaliações do jogo');
+        }
+        const data = await response.json();
+        return data.totalUserRatings;
+    }    
+
     static async getAllWithDetails(): Promise<JogoDetails[]> {
         const allJogos = await this.getAll();
         const jogosWithDetails: JogoDetails[] = [];
 
         for (const jogo of allJogos) {
             try {
-                // Get platform IDs for this game
                 const plataformasIds = await JogoPlataformaService.getByJogoId(jogo.id);
                 let plataformas: Plataforma[] = [];
                 
-                // Only fetch platforms if there are IDs
                 if (plataformasIds && plataformasIds.length > 0) {
                     const plataformaIds = plataformasIds.map(p => p.fk_Plataforma_id);
                     plataformas = await PlataformasService.getByIds(plataformaIds);
                 }
 
-                // Get category IDs for this game
                 const categoriasIds = await JogoCategoriaService.getByJogoId(jogo.id);
                 let categorias: Categoria[] = [];
                 
-                // Only fetch categories if there are IDs
                 if (categoriasIds && categoriasIds.length > 0) {
                     const categoriaIds = categoriasIds.map(c => c.fk_Categoria_id);
                     categorias = await CategoriaService.getByIds(categoriaIds);
                 }
 
+                const rating = await this.getRatingById(jogo.id);
+                const totalUserRatings = await this.getTotalUserRatingsById(jogo.id);
+
                 jogosWithDetails.push({
                     ...jogo,
                     plataformas,
-                    categorias
+                    categorias,
+                    rating,
+                    totalUserRatings
                 } as JogoDetails);
             } catch (error) {
                 console.error(`Error fetching details for game ${jogo.id}:`, error);
-                // Add game without details if there's an error
                 jogosWithDetails.push({
                     ...jogo,
                     plataformas: [],
-                    categorias: []
+                    categorias: [],
+                    rating: 0,
+                    totalUserRatings: 0
                 } as JogoDetails);
             }
         }
@@ -107,7 +127,6 @@ export class JogosService {
             categorias
         } as JogoDetails;
     }
-
 
     static async create(jogo: CreateJogoDTO): Promise<Jogo> {
         const response = await fetch(this.BASE_URL, {
@@ -146,5 +165,38 @@ export class JogosService {
         }
 
         return response.status === 204; // No Content
+    }
+
+    static async sortByRating(jogos: JogoDetails[]): Promise<JogoDetails[]> {
+        const ratings = await Promise.all(
+            jogos.map(async jogo => {
+                const r = jogo.rating ?? 0;
+                const v = jogo.totalUserRatings ?? 0;
+                return { 
+                    jogo, 
+                    r, 
+                    v 
+                };
+            })
+        );
+
+        const allRatings = ratings.map(r => r.r);
+        const allVotes = ratings.map(r => r.v);
+
+        const c = allRatings.reduce((sum, val) => sum + val, 0) / (allRatings.length || 1);
+        const m = allVotes.reduce((sum, val) => sum + val, 0) / (allVotes.length || 1);
+
+        const jogosWithBayesian = await Promise.all(
+            ratings.map(async ({ jogo, r, v }) => {
+                const bayesian = await this.calculateBayesianRating(r, v, c, m);
+                return { ...jogo, bayesianRating: bayesian };
+            })
+        );
+
+        return jogosWithBayesian.sort((a, b) => (b.bayesianRating ?? 0) - (a.bayesianRating ?? 0));
+    }
+
+    private static async calculateBayesianRating(r: number, v: number, c: number, m: number): Promise<number> {
+        return (v / (v + m)) * r + (m / (v + m)) * c; 
     }
 }

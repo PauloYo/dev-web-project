@@ -38,7 +38,7 @@ export class UsuariosService {
             throw new Error('Campo inválido para atualização');
         }
         const response = await fetch(`${this.BASE_URL}/${id}/${field}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },

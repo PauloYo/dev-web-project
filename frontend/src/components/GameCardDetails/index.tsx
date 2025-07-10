@@ -23,7 +23,7 @@ function GameCardDetails({ game, ranking, width = '300px', height = '300px' }: G
       <img className="h-full" src={game?.imagem} alt={game.nome} />
       <div className="flex flex-col">
         <TitleGameCard title={game.nome} developer={game?.desenvolvedor} platforms={game.plataformas} />
-        <GameRating rating={4.3} quantity={768} />
+        <GameRating rating={game.rating} quantity={game.totalUserRatings} />
         <GameDescription description={game.descricao} />
       </div>
     </div>

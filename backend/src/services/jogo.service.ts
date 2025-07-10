@@ -43,6 +43,22 @@ export class JogoService {
     return result.rows;
   }
 
+  static async getRatingById(id: number): Promise<number> {
+    const result = await pool.query(
+      'SELECT AVG(nota) as rating FROM AVALIACAO WHERE fk_Jogo_id = $1',
+      [id]
+    );
+    return parseFloat(result.rows[0].rating) || 0;
+  }
+
+  static async getTotalUserRatingsById(id: number): Promise<number> {
+    const result = await pool.query(
+      'SELECT COUNT(*) as totalUserRatings FROM AVALIACAO WHERE fk_Jogo_id = $1',
+      [id]
+    );
+    return parseInt(result.rows[0].totalUserRatings, 10) || 0;
+  }
+
   static async update(id: number, data: CreateJogoDTO): Promise<Jogo | null> {
     const { nome, descricao, imagem } = data;
     const result = await pool.query(
@@ -58,11 +74,11 @@ export class JogoService {
   }
 
   static async updateDesenvolvedor(id: number, desenvolvedor: string) {
-  const result = await pool.query(
-    'UPDATE JOGO SET desenvolvedor = $1 WHERE id = $2 RETURNING *',
-    [desenvolvedor, id]
-  );
-  return result.rows[0];
-}
+    const result = await pool.query(
+      'UPDATE JOGO SET desenvolvedor = $1 WHERE id = $2 RETURNING *',
+      [desenvolvedor, id]
+    );
+    return result.rows[0];
+  }
 
 }

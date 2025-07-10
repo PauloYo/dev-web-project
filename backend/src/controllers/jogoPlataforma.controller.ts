@@ -15,7 +15,7 @@ export class JogoPlataformaController {
     }
 
     static async getByJogoId(req: Request, res: Response) {
-        const fk_Jogo_id = Number(res.locals.id);
+        const fk_Jogo_id = Number(res.locals.params.id);
         const jogosPlataformas = await JogoPlataformaService.getByJogoId(fk_Jogo_id);
         
         if (jogosPlataformas.length === 0) {

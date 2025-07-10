@@ -20,7 +20,7 @@ export class JogoController {
     }
 
     static async getById(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const jogo = await JogoService.getById(id);
 
         if (!jogo) {
@@ -42,8 +42,30 @@ export class JogoController {
         res.json(jogos);
     }
 
+    static async getRatingById(req: Request, res: Response) {
+        const id = Number(res.locals.params.id);
+        const rating = await JogoService.getRatingById(id);
+
+        if (rating === null) {
+            return res.status(404).json({ error: 'Jogo não encontrado' });
+        }
+        
+        res.json({ rating });
+    }
+
+    static async getTotalUserRatingsById(req: Request, res: Response) {
+        const id = Number(res.locals.params.id);
+        const totalUserRatings = await JogoService.getTotalUserRatingsById(id);
+
+        if (totalUserRatings === null) {
+            return res.status(404).json({ error: 'Jogo não encontrado' });
+        }
+        
+        res.json({ totalUserRatings });
+    }
+
     static async update(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const data = res.locals.body as CreateJogoDTO;
         const jogo = await JogoService.update(id, data);
 
@@ -54,7 +76,7 @@ export class JogoController {
     }
 
     static async delete(req: Request, res: Response) {
-        const id = Number(res.locals.id);
+        const id = Number(res.locals.params.id);
         const deleted = await JogoService.delete(id);
 
         if (!deleted) {
@@ -70,8 +92,8 @@ export class JogoController {
     }
 
     static async updateDesenvolvedor(req: Request, res: Response) {
-    const id = Number(req.params.id); // extraído do validateRequest
-    const { desenvolvedor } = req.body; // também do validateRequest
+    const id = Number(req.params.id);
+    const { desenvolvedor } = req.body;
 
     const jogoAtualizado = await JogoService.updateDesenvolvedor(id, desenvolvedor);
 
