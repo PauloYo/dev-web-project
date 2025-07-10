@@ -1,44 +1,53 @@
-// import React, { useEffect, useState } from 'react';
-// import Nav from '../components/shared/Nav';
-// import Title from '../components/shared/Title';
-// import logoImage from '../assets/logo-image.png';
-// import { JogosService } from '../services/jogos';
-// import type { JogoDetails } from '../types/internal';
-// import Footer from '../components/shared/Footer'
+import type { JogoDetails } from '../types/internal'
 
-// function SelectedGame() {
-//     const [jogo, setJogo] = useState<JogoDetails | null>(null);
-//     const [mensagem, setMensagem] = useState('');
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-//     useEffect(() => {
-//         const fetchJogo =  async () => {
-//             try {
-//                 const id = IdJogo;
-//                 const jogo = await JogosService.getByIdWithDetails(id);
-//                 setJogo({
-//                     id: jogo.id,
-//                     nome: jogo.nome,
-//                     descricao: jogo.descricao,
-//                     imagem: jogo.imagem,
-//                     categorias: jogo.categorias,
-//                     plataformas: jogo.plataformas 
+import Nav from '../components/shared/Nav';
+import Footer from '../components/shared/Footer';
+import Comentario from '../components/Comentario'
+import GameCardDetails from '../components/GameCardDetails';
 
-//                 });
+import { isLogged } from '../utils/login'
 
-//             } catch (err) {
-//                 setMensagem('Erro ao carregar jogo.');
-//             }
-//         }
 
-//     })
-//     return (
-//         <>
-//         <Nav />
-//         <div></div>
+function SelectedGame() {
+  const [message, setMessage] = useState<string>('Carregando...');
+  const [jogo, setJogo] = useState<JogoDetails | null>(null);
+  const { id } = useParams();
 
-//         <Footer />
-//         </>
-//     )
-// }
+  useEffect(() => {
+    const storedGame = localStorage.getItem('selectedGame');
+    if (storedGame) {
+      const parsedGame = JSON.parse(storedGame);
+      if (parsedGame.id.toString() === id) {
+        setJogo(parsedGame);
+      } else {
+        setMessage('Jogo não encontrado.')
+      }
+    }
+  }, [id]);
 
-// export default SelectedGame;
+  if (!jogo) {
+    return (
+      <>
+        <Nav />
+        <div className="text-center mt-10 text-white">{ message }</div>
+        <Footer />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Nav />
+      <section className="flex flex-col items-center gap-6 mt-10 px-4 text-white">
+        <GameCardDetails game={jogo} width='1000px' height='400px' />
+        {isLogged() ? <Comentario /> : ''}
+      </section>
+      <Footer />
+    </>
+  );
+}
+
+export default SelectedGame;

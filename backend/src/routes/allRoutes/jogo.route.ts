@@ -4,6 +4,7 @@ import { validateRequest } from '../../middleware/validateRequest';
 import { CreateJogoSchema } from '../../models/jogo.model';
 import { GameNameSchema, IdParamSchema } from '../../models/validation.param.model';
 import { JogoController } from '../../controllers/jogo.controller';
+import { UpdateDesenvolvedorSchema } from '../../models/validation.body.model'; // certifique-se do caminho correto
 
 const router = Router();
 
@@ -56,6 +57,15 @@ router.delete(
 router.post(
   '/batch',
   asyncHandler(JogoController.getByIds)
+);
+
+router.patch(
+  '/:id/desenvolvedor',
+  validateRequest({
+    params: IdParamSchema,
+    body: UpdateDesenvolvedorSchema
+  }),
+  asyncHandler(JogoController.updateDesenvolvedor)
 );
 
 export default router;

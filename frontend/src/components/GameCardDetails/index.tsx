@@ -2,6 +2,7 @@ import type { JogoDetails } from '../../types/internal'
 
 import GameRating from "./GameRating"
 import TitleGameCard from "./TitleGameCard"
+import GameDescription from "./GameDescription"
 
 type GameCardProps = {
     game: JogoDetails
@@ -10,7 +11,7 @@ type GameCardProps = {
     height?: string
 }
 
-function GameCard({ game, ranking, width = '300px', height = '300px' }: GameCardProps) {
+function GameCardDetails({ game, ranking, width = '300px', height = '300px' }: GameCardProps) {
   return (
     <div
       className="flex flex-row items-center justify-between gap-4 p-8 border border-primary rounded-3xl shadow-2xl shadow-purple-shadow"
@@ -23,9 +24,10 @@ function GameCard({ game, ranking, width = '300px', height = '300px' }: GameCard
       <div className="flex flex-col">
         <TitleGameCard title={game.nome} developer={game?.desenvolvedor} platforms={game.plataformas} />
         <GameRating rating={4.3} quantity={768} />
+        <GameDescription description={game.descricao} />
       </div>
     </div>
   );
 }
 
-export default GameCard;
+export default GameCardDetails;

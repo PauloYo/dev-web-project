@@ -56,4 +56,13 @@ export class JogoService {
     const result = await pool.query('DELETE FROM JOGO WHERE id=$1 RETURNING *', [id]);
     return result.rows.length > 0;
   }
+
+  static async updateDesenvolvedor(id: number, desenvolvedor: string) {
+  const result = await pool.query(
+    'UPDATE JOGO SET desenvolvedor = $1 WHERE id = $2 RETURNING *',
+    [desenvolvedor, id]
+  );
+  return result.rows[0];
+}
+
 }

@@ -68,4 +68,18 @@ export class JogoController {
         const jogos = await JogoService.getByIds(ids);
         res.json(jogos);
     }
+
+    static async updateDesenvolvedor(req: Request, res: Response) {
+    const id = Number(req.params.id); // extraído do validateRequest
+    const { desenvolvedor } = req.body; // também do validateRequest
+
+    const jogoAtualizado = await JogoService.updateDesenvolvedor(id, desenvolvedor);
+
+    if (!jogoAtualizado) {
+        return res.status(404).json({ error: 'Jogo não encontrado' });
+    }
+
+    res.json(jogoAtualizado);
+    }
+
 }

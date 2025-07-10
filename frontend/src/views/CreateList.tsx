@@ -1,10 +1,13 @@
+import type { CreateListaDTO, CreateJogoListaDTO } from '../types/api';
+
+import React, { useState } from 'react'
+
 import Nav from '../components/shared/Nav'
 import Title from '../components/shared/Title'
-import React, { useState } from 'react'
+
 import { JogosService } from '../services/jogos';
 import { ListasService } from '../services/listas';
 import { JogoListaService } from '../services/jogoLista';
-import type { CreateListaDTO, CreateJogoListaDTO } from '../types/api';
 
 function CreateList() {
   const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado') || '{}');

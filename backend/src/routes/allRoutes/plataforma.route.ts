@@ -16,6 +16,7 @@ router.post(
   asyncHandler(PlataformaController.create)
 );
 
+
 router.get(
   '/',
   asyncHandler(PlataformaController.getAll)

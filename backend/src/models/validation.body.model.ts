@@ -30,3 +30,7 @@ export const IdsBodySchema = z.object({
 }).refine(data => data.ids.length > 0, {
   message: 'A lista de IDs não pode estar vazia'
 });
+
+export const UpdateDesenvolvedorSchema = z.object({
+  desenvolvedor: z.string().min(1, "O nome do desenvolvedor é obrigatório")
+});

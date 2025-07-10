@@ -8,6 +8,8 @@ import UserLists from "../views/UserLists"
 import Games from "../views/Games"
 import CreateList from "../views/CreateList"
 import ProfileEdit from "../views/ProfileEdit"
+import SelectedGame from "../views/SelectedGame"
+
 
 export const router = createBrowserRouter([
   {
@@ -42,4 +44,7 @@ export const router = createBrowserRouter([
     path: "/public-lists",
     Component: PublicLists
   },
+  { path: '/selected-game/:id',
+    Component: SelectedGame
+  }
 ])
