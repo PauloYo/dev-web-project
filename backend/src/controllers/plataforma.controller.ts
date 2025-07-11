@@ -25,7 +25,7 @@ export class PlataformaController {
     }
 
     static async getByIds(req: Request, res: Response) {
-        const { ids } = res.locals.body;
+        const { ids }: { ids: number[] } = res.locals.body;
         const plataformas = await PlataformaService.getByIds(ids);
 
         if (plataformas.length === 0) {

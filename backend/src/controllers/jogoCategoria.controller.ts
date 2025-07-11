@@ -14,6 +14,13 @@ export class JogoCategoriaController {
         res.json(categoriasJogos);
     }
 
+    static async getByJogoId(req: Request, res: Response) {
+        const fk_Jogo_id = Number(res.locals.params.id);
+        const categoriasJogos = await JogoCategoriaService.getByJogoId(fk_Jogo_id);
+
+        res.json(categoriasJogos);
+    }
+
     static async delete(req: Request, res: Response) {
         const data = res.locals.body as CreateCategoriaJogoDTO;
         const deleted = await JogoCategoriaService.delete(data);

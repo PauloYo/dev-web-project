@@ -25,8 +25,12 @@ export const DescricaoSchema = z.object({
   descricao: z.string().min(1, 'Descrição não pode estar vazia'),
 });
 
+export const ComentarioDescricaoSchema = z.object({
+  descricao: z.string().min(1, 'Descrição não pode estar vazia'),
+});
+
 export const IdsBodySchema = z.object({
-  ids: z.array(z.number().int().positive())
+  ids: z.array(z.number().int().min(1))
 }).refine(data => data.ids.length > 0, {
   message: 'A lista de IDs não pode estar vazia'
 });

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Nav from '../components/shared/Nav';
 import Title from '../components/shared/Title';
+import { useNavigate } from 'react-router-dom';
+
 
 interface Jogo {
   id: number;
@@ -35,6 +37,12 @@ function UserLists() {
     }
     fetchListas();
   }, [usuarioLogado.id]);
+
+  const navigate = useNavigate();
+
+  const handleToCreateList = () => {
+    navigate('/create-list');
+  };
 
   const fetchListas = async () => {
     try {
@@ -329,6 +337,14 @@ function UserLists() {
             </div>
           </div>
         )}
+        <div className="w-full flex justify-center">
+          <button
+            onClick={handleToCreateList}
+            className="bg-green-600 hover:bg-green-700 transition px-4 py-2 rounded text-white mb-6"
+          >
+            Criar Nova Lista
+          </button>
+        </div>
       </section>
     </>
   );

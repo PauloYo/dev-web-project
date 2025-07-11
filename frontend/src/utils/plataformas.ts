@@ -2,20 +2,26 @@ export function platformToIcon(platform: string) {
   let result: string;
 
   switch (platform) {
-    case 'PS4':
+    case 'playstation':
       result = 'playstation'
       break
-    case 'PC':
+    case 'windows':
       result = 'windows'
       break
-    case 'XBOX ONE':
+    case 'xbox':
       result = 'xbox'
       break
-    case 'NINTENDO SWITCH':
+    case 'nintendo':
       result = 'nintendo'
       break
-    case 'NINTENDO SWITCH 2':
-      result = 'nintendo'
+    case 'macos':
+      result = 'macos'
+      break
+    case 'linux':
+      result = 'linux'
+      break
+    case 'mobile':
+      result = 'mobile'
       break
     default:
       result = 'none'

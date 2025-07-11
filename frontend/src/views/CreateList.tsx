@@ -1,13 +1,13 @@
-import type { CreateListaDTO, CreateJogoListaDTO } from '../types/api';
+//import type { CreateListaDTO, CreateJogoListaDTO } from '../types/api';
 
 import React, { useState } from 'react'
 
 import Nav from '../components/shared/Nav'
 import Title from '../components/shared/Title'
 
-import { JogosService } from '../services/jogos';
-import { ListasService } from '../services/listas';
-import { JogoListaService } from '../services/jogoLista';
+//import { JogosService } from '../services/jogos';
+//import { ListasService } from '../services/listas';
+//import { JogoListaService } from '../services/jogoLista';
 
 function CreateList() {
   const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado') || '{}');
@@ -25,12 +25,10 @@ function CreateList() {
       setResultados([]);
       return;
     }
-    if (nomeBusca === "") {
-      return;
-    }
     try {
-      const jogosBuscados = await JogosService.getByName(nomeBusca);
-      setResultados(jogosBuscados);
+      const res = await fetch(`http://localhost:3001/jogos?nome=${encodeURIComponent(nomeBusca)}`);
+      const data = await res.json();
+      setResultados(data);
     } catch {
       setResultados([]);
     }
@@ -57,20 +55,29 @@ function CreateList() {
       return;
     }
     try {
-      const listaBody : CreateListaDTO = {
-        nome,
-        ehPublico,
-        fk_Usuario_id: usuarioLogado.id
-      };
-      const listaCriada = await ListasService.create(listaBody);
-
-      if (listaCriada) {
+      // Cria a lista
+      const res = await fetch('http://localhost:3001/listas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nome,
+          ehPublico,
+          fk_Usuario_id: usuarioLogado.id
+        })
+      });
+      if (res.ok) {
+        const listaCriada = await res.json();
+        // Adiciona os jogos à lista
         await Promise.all(
           jogosSelecionados.map(jogo =>
-            JogoListaService.create({
-              fk_Jogo_id: jogo.id,
-              fk_Lista_id: listaCriada.id
-            } as CreateJogoListaDTO)
+            fetch('http://localhost:3001/jogos-listas', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                fk_Jogo_id: jogo.id,
+                fk_Lista_id: listaCriada.id
+              })
+            })
           )
         );
         setMensagem('Lista criada com sucesso!');
@@ -80,7 +87,8 @@ function CreateList() {
         setResultados([]);
         setBusca('');
       } else {
-        setMensagem('Erro ao criar lista.');
+        const erro = await res.json();
+        setMensagem('Erro: ' + erro.error);
       }
     } catch (err) {
       setMensagem('Erro ao conectar com o servidor.');

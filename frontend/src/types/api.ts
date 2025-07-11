@@ -2,8 +2,8 @@ import { z } from 'zod';
 
 export const CreateAvaliacaoSchema = z.object({
     nota: z.number().int().min(0).max(5),
-    fk_Jogo_id: z.number().int(),
-    fk_Usuario_id: z.number().int(),
+    fk_jogo_id: z.number().int(),
+    fk_usuario_id: z.number().int(),
 });
 export type CreateAvaliacaoDTO = z.infer<typeof CreateAvaliacaoSchema>;
 export type Avaliacao = CreateAvaliacaoDTO & { id: number };
@@ -17,8 +17,8 @@ export type Categoria = CreateCategoriaDTO & { id: number };
 
 
 export const CreateCategoriaJogoSchema = z.object({
-    fk_Categoria_id: z.number().int(),
-    fk_Jogo_id: z.number().int(),
+    fk_categoria_id: z.number().int(),
+    fk_jogo_id: z.number().int(),
 })
 export type CreateCategoriaJogoDTO = z.infer<typeof CreateCategoriaJogoSchema>;
 export type CategoriaJogo = CreateCategoriaJogoDTO;
@@ -26,7 +26,7 @@ export type CategoriaJogo = CreateCategoriaJogoDTO;
 
 export const CreateComentarioSchema = z.object({
     descricao: z.string().min(1).max(500),
-    fk_Avaliacao_id: z.number().int(),
+    fk_avaliacao_id: z.number().int(),
 })
 export type CreateComentarioDTO = z.infer<typeof CreateComentarioSchema>;
 export type Comentario = CreateComentarioDTO & { id: number };
@@ -43,16 +43,16 @@ export type Jogo = CreateJogoDTO & { id: number };
 
 
 export const CreateJogoListaSchema = z.object({
-    fk_Jogo_id: z.number().int(),
-    fk_Lista_id: z.number().int(),
+    fk_jogo_id: z.number().int(),
+    fk_lista_id: z.number().int(),
 })
 export type CreateJogoListaDTO = z.infer<typeof CreateJogoListaSchema>;
 export type JogoLista = CreateJogoListaDTO;
 
 
 export const CreateJogoPlataformaSchema = z.object({
-    fk_Plataforma_id: z.number().int(),
-    fk_Jogo_id: z.number().int(),
+    fk_plataforma_id: z.number().int(),
+    fk_jogo_id: z.number().int(),
 })
 export type CreateJogoPlataformaDTO = z.infer<typeof CreateJogoPlataformaSchema>;
 export type JogoPlataforma = CreateJogoPlataformaDTO;
@@ -61,7 +61,7 @@ export type JogoPlataforma = CreateJogoPlataformaDTO;
 export const CreateListaSchema = z.object({
     nome: z.string().min(1).max(100),
     ehPublico: z.boolean(),
-    fk_Usuario_id: z.number().int(),
+    fk_usuario_id: z.number().int(),
 })
 export type CreateListaDTO = z.infer<typeof CreateListaSchema>;
 export type Lista = CreateListaDTO & { id: number };

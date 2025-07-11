@@ -57,10 +57,6 @@ export class JogoController {
         const id = Number(res.locals.params.id);
         const totalUserRatings = await JogoService.getTotalUserRatingsById(id);
 
-        if (totalUserRatings === null) {
-            return res.status(404).json({ error: 'Jogo não encontrado' });
-        }
-        
         res.json({ totalUserRatings });
     }
 

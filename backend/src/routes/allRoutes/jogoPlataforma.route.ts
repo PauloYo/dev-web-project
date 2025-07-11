@@ -21,7 +21,7 @@ router.get(
 );
 
 router.get(
-  '/jogo/:fk_Jogo_id',
+  '/jogo/:id',
   validateRequest({
     params: IdParamSchema
   }),

@@ -30,7 +30,7 @@ router.get(
   asyncHandler(PlataformaController.getById)
 );
 
-router.get(
+router.post(
   '/batch',
   validateRequest({
     body: IdsBodySchema

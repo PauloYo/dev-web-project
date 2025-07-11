@@ -25,7 +25,7 @@ export class CategoriaController {
     }
 
     static async getByIds(req: Request, res: Response) {
-        const { ids } = res.locals.body;
+        const { ids } : { ids: number[] } = res.locals.body;
         const categorias = await CategoriaService.getByIds(ids);
         
         if (categorias.length === 0) {

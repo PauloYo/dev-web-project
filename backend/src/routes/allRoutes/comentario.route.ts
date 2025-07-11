@@ -2,8 +2,9 @@ import { Router } from 'express';
 import { asyncHandler } from '../../middleware/errorHandler';
 import { validateRequest } from '../../middleware/validateRequest';
 import { CreateComentarioSchema } from '../../models/comentario.model';
-import { ComentarioIdParamSchema, IdParamSchema } from '../../models/validation.param.model';
+import { IdParamSchema } from '../../models/validation.param.model';
 import { ComentarioController } from '../../controllers/comentario.controller';
+import { ComentarioDescricaoSchema } from '../../models/validation.body.model';
 
 const router = Router();
 
@@ -21,11 +22,11 @@ router.get(
 );
 
 router.get(
-  '/usuario/:userId/:gameId',
+  '/avaliacao/:id',
   validateRequest({
-    params: ComentarioIdParamSchema
+    params: IdParamSchema
   }),
-  asyncHandler(ComentarioController.getByUserId)
+  asyncHandler(ComentarioController.getByAvaliacaoId)
 );
 
 router.get(
@@ -44,6 +45,15 @@ router.put(
   }),
   asyncHandler(ComentarioController.update)
 );
+
+router.patch(
+  '/:id/descricao',
+  validateRequest({
+    params: IdParamSchema,
+    body: ComentarioDescricaoSchema
+  }),
+  asyncHandler(ComentarioController.updateDescricao)
+)
 
 router.delete(
   '/:id',

@@ -1,5 +1,5 @@
 import pool from '../config/database';
-import { CreateCategoriaJogoDTO } from '../models/categoriaJogo.model';
+import { CreateCategoriaJogoDTO, CategoriaJogo } from '../models/categoriaJogo.model';
 
 export class JogoCategoriaService {
     static async create(data: CreateCategoriaJogoDTO) {
@@ -16,7 +16,7 @@ export class JogoCategoriaService {
         return result.rows;
     }
 
-    static async getByJogoId(fk_Jogo_id: number) {
+    static async getByJogoId(fk_Jogo_id: number) : Promise<CategoriaJogo[]> {
         const result = await pool.query(
             'SELECT * FROM CATEGORIA_JOGO WHERE fk_Jogo_id = $1',
             [fk_Jogo_id]

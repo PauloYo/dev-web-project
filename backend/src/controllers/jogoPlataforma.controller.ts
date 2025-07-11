@@ -18,10 +18,6 @@ export class JogoPlataformaController {
         const fk_Jogo_id = Number(res.locals.params.id);
         const jogosPlataformas = await JogoPlataformaService.getByJogoId(fk_Jogo_id);
         
-        if (jogosPlataformas.length === 0) {
-            return res.status(404).json({ error: 'Nenhuma relação encontrada para o jogo' });
-        }
-        
         res.json(jogosPlataformas);
     }
 

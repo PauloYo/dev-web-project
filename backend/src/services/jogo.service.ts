@@ -53,10 +53,10 @@ export class JogoService {
 
   static async getTotalUserRatingsById(id: number): Promise<number> {
     const result = await pool.query(
-      'SELECT COUNT(*) as totalUserRatings FROM AVALIACAO WHERE fk_Jogo_id = $1',
+      'SELECT COUNT(*) as totalratings FROM AVALIACAO WHERE fk_Jogo_id = $1',
       [id]
     );
-    return parseInt(result.rows[0].totalUserRatings, 10) || 0;
+    return parseInt(result.rows[0].totalratings, 10) || 0;
   }
 
   static async update(id: number, data: CreateJogoDTO): Promise<Jogo | null> {

@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
 import Nav from '../components/shared/Nav';
 import Title from '../components/shared/Title';
-
-interface Jogo {
-  id: number;
-  nome: string;
-  descricao?: string;
-  imagem?: string;
-}
+import { JogosService } from '../services/jogos';
+import type { JogoDetails } from '../types/internal';
 
 interface Usuario {
   id: number;
@@ -19,7 +13,7 @@ interface Usuario {
 interface ListaPublica {
   id: number;
   nome: string;
-  jogos: Jogo[];
+  jogos: JogoDetails[];
   fk_usuario_id: number;
   usuarioNome?: string; // Nome do dono da lista
 }
@@ -40,21 +34,16 @@ function PublicLists() {
       const listasData: ListaPublica[] = await resListas.json();
 
       // Para cada lista, buscar os jogos e o nome do usuário dono
-      const listasComDetalhes = await Promise.all(
+      const listasComDetalhes: ListaPublica[] = await Promise.all(
         listasData.map(async (lista) => {
           // Busca jogos da lista
           const resJogoLista = await fetch(`http://localhost:3001/jogos-listas?fk_Lista_id=${lista.id}`);
           const jogoListaData = resJogoLista.ok ? await resJogoLista.json() : [];
 
           const jogoIds = jogoListaData.map((jl: any) => jl.fk_jogo_id);
-          let jogosDetalhados: Jogo[] = [];
+          let jogosDetalhados: JogoDetails[] = [];
           if (jogoIds.length > 0) {
-            const resJogosBatch = await fetch('http://localhost:3001/jogos/batch', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ ids: jogoIds }),
-            });
-            if (resJogosBatch.ok) jogosDetalhados = await resJogosBatch.json();
+            jogosDetalhados = await JogosService.getByIdsWithDetails(jogoIds);
           }
 
           // Busca usuário dono da lista

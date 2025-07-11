@@ -5,6 +5,7 @@ import { CreateAvaliacaoSchema } from '../../models/avaliacao.model';
 import { IdParamSchema } from '../../models/validation.param.model';
 import { NotaSchema } from '../../models/validation.body.model';
 import { AvaliacaoController } from '../../controllers/avaliacao.controller';
+import { z } from 'zod';
 
 
 const router = Router();
@@ -16,6 +17,17 @@ router.post(
   }), 
   asyncHandler(AvaliacaoController.create)
 );
+
+router.get(
+  '/usuario/:userId/jogo/:jogoId',
+  validateRequest({
+    params: z.object({
+      userId: z.string().transform(Number),
+      jogoId: z.string().transform(Number)
+    })
+  }),
+  asyncHandler(AvaliacaoController.getByUsuarioJogoId)
+)
 
 router.get(
   '/', 

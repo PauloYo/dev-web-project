@@ -72,10 +72,13 @@ export class JogosService {
         for (const jogo of allJogos) {
             try {
                 const plataformasIds = await JogoPlataformaService.getByJogoId(jogo.id);
+                console.log(`Raw plataformasIds for game ${jogo.id}:`, plataformasIds);
                 let plataformas: Plataforma[] = [];
-                
+
                 if (plataformasIds && plataformasIds.length > 0) {
-                    const plataformaIds = plataformasIds.map(p => p.fk_Plataforma_id);
+                    const plataformaIds = plataformasIds.map(p => p.fk_plataforma_id);
+                    console.log(`Mapped plataformaIds for game ${jogo.id}:`, plataformaIds);
+                    console.log(`Sample object structure:`, plataformasIds[0]);
                     plataformas = await PlataformasService.getByIds(plataformaIds);
                 }
 
@@ -83,7 +86,7 @@ export class JogosService {
                 let categorias: Categoria[] = [];
                 
                 if (categoriasIds && categoriasIds.length > 0) {
-                    const categoriaIds = categoriasIds.map(c => c.fk_Categoria_id);
+                    const categoriaIds = categoriasIds.map(c => c.fk_categoria_id);
                     categorias = await CategoriaService.getByIds(categoriaIds);
                 }
 
@@ -113,19 +116,56 @@ export class JogosService {
     }
 
     static async getByIdWithDetails(id: number): Promise<JogoDetails> {
-        const jogo = await this.getById(id);
+        try {
+            const jogo = await this.getById(id);
 
-        const plataformasIds = await JogoPlataformaService.getByJogoId(jogo.id);
-        const plataformas = await PlataformasService.getByIds(plataformasIds.map(p => p.fk_Plataforma_id));
+            // Plataformas
+            const plataformasIds = await JogoPlataformaService.getByJogoId(jogo.id);
+            let plataformas: Plataforma[] = [];
+            if (plataformasIds && plataformasIds.length > 0) {
+                const plataformaIds = plataformasIds.map(p => p.fk_plataforma_id);
+                plataformas = await PlataformasService.getByIds(plataformaIds);
+            }
 
-        const categoriasIds = await JogoCategoriaService.getByJogoId(jogo.id);
-        const categorias = await CategoriaService.getByIds(categoriasIds.map(c => c.fk_Categoria_id));
+            // Categorias
+            const categoriasIds = await JogoCategoriaService.getByJogoId(jogo.id);
+            let categorias: Categoria[] = [];
+            if (categoriasIds && categoriasIds.length > 0) {
+                const categoriaIds = categoriasIds.map(c => c.fk_categoria_id);
+                categorias = await CategoriaService.getByIds(categoriaIds);
+            }
 
-        return {
-            ...jogo,
-            plataformas,
-            categorias
-        } as JogoDetails;
+            // Ratings
+            const rating = await this.getRatingById(jogo.id);
+            const totalUserRatings = await this.getTotalUserRatingsById(jogo.id);
+
+            return {
+                ...jogo,
+                plataformas,
+                categorias,
+                rating,
+                totalUserRatings
+            } as JogoDetails;
+        } catch (error) {
+            console.error(`Error fetching details for game ${id}:`, error);
+            // Return a minimal JogoDetails object with empty arrays/defaults
+            const jogo = await this.getById(id);
+            return {
+                ...jogo,
+                plataformas: [],
+                categorias: [],
+                rating: 0,
+                totalUserRatings: 0
+            } as JogoDetails;
+        }
+    }
+
+    static async getByIdsWithDetails(ids: number[]): Promise<JogoDetails[]> {
+        // Busca todos os jogos básicos pelos IDs
+        const jogos = await this.getByIds(ids);
+
+        // Busca detalhes para cada jogo em paralelo
+        return Promise.all(jogos.map(jogo => this.getByIdWithDetails(jogo.id)));
     }
 
     static async create(jogo: CreateJogoDTO): Promise<Jogo> {

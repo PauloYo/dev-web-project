@@ -6,7 +6,7 @@ import Platforms from "./Platforms";
 
 import { platformToIcon } from '../../utils/plataformas';
 
-type CardSize = 'large' | 'medium';
+type CardSize = 'xlarge' | 'large' | 'medium';
 
 type TitleGameCardProps = {
   title: string
@@ -16,23 +16,25 @@ type TitleGameCardProps = {
 };
 
 const SIZE_MAP: Record<CardSize, { size: string }> = {
-  large: { size: 'text-3xl' },
+  xlarge: { size: 'text-3xl' },
+  large: { size: 'text-4xl' },
   medium: { size: 'text-2xl' },
 };
 
-function TitleGameCard({ title, developer, platforms, size }: TitleGameCardProps) {
+function TitleGameCard({ title, developer, platforms, size = 'medium'}: TitleGameCardProps) {
   const platformOptions = platforms.map(platform => platformToIcon(platform.descricao)) as PlataformasOptions[];
 
-  const { size: titleSize } = SIZE_MAP[size || 'large'];
+  const { size: titleSize } = SIZE_MAP[size];
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex items-center flex-col gap-2">
       <div>
         <Title text={title} size={titleSize} />
         {developer ? <p className="text-gray-500">by {developer}</p> : ''}
-      </div>
-      <div className="flex gap-2 text-2xl">
-        <Platforms platforms={platformOptions} />
+        <div className="flex gap-2 text-2xl">
+          <Platforms platforms={platformOptions} />
+          <br></br>
+        </div>
       </div>
     </div>
   );

@@ -20,13 +20,13 @@ router.get(
   asyncHandler(JogoCategoriaController.getAll)
 );
 
-//router.get(
-//  '/jogo/:fk_Jogo_id',
-//  validateRequest({
-//    params: IdParamSchema
-//  }),
-//  asyncHandler(JogoCategoriaController.getByJogoId)
-//)
+router.get(
+ '/jogo/:id',
+ validateRequest({
+   params: IdParamSchema
+ }),
+ asyncHandler(JogoCategoriaController.getByJogoId)
+)
 
 router.delete(
   '/',

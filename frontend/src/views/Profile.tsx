@@ -8,6 +8,15 @@ function Profile() {
   const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado') || '{}');
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.removeItem('usuarioLogado');
+    navigate('/');
+  };
+
+  const handleUserLists = () => {
+    navigate('/user-lists');
+  };
+
   const getImagemUsuario = () => {
     if (
       usuarioLogado.imagem &&
@@ -38,16 +47,26 @@ function Profile() {
             {usuarioLogado.descricao || 'Nenhuma descrição'}
           </p>
 
-          <button
-            onClick={() => navigate('/profile-edit')}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
+          <div className="flex flex-col items-center gap-4 mt-6">
+          <button onClick={() => navigate('/profile-edit')}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
             Editar Perfil
           </button>
+        <button
+          onClick={handleLogout}
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+          Sign Out
+        </button>
+        <button
+          onClick={handleUserLists}
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+          User Lists
+        </button>
         </div>
-      </section>
-    </>
-  );
+      </div>
+    </section>
+  </>
+);
 }
 
 export default Profile;

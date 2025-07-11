@@ -16,7 +16,13 @@ export class JogoListaService {
         }
         return response.json();
     }
-
+    static async getByListaId(listaId: number): Promise<JogoLista[]> {
+        const response = await fetch(`${this.BASE_URL}/lista/${listaId}`);
+        if (!response.ok) {
+            throw new Error('Erro ao buscar jogos da lista');
+        }
+        return response.json();
+    }
     static async delete(jogoLista: JogoLista): Promise<boolean> {
         const response = await fetch(this.BASE_URL, {
             method: 'DELETE',

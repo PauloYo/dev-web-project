@@ -30,6 +30,17 @@ export class AvaliacaoController {
         res.json(avaliacao);
     }
 
+    static async getByUsuarioJogoId(req: Request, res: Response) {
+        const { userId, jogoId } = res.locals.params;
+        const avaliacao = await AvaliacaoService.getByUsuarioJogoId(Number(userId), Number(jogoId));
+
+        if (!avaliacao) {
+            return res.status(404).json({ error: 'Avaliação não encontrada para o usuário e jogo especificados' });
+        }
+        
+        res.json(avaliacao);
+    }
+
     static async update(req: Request, res: Response) {
         const id = Number(res.locals.params.id);
         const data = res.locals.body as CreateAvaliacaoDTO;

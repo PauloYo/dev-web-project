@@ -3,10 +3,10 @@ import { CreateAvaliacaoDTO, Avaliacao } from '../models/avaliacao.model';
 
 export class AvaliacaoService {
   static async create(data: CreateAvaliacaoDTO): Promise<Avaliacao> {
-    const { nota, fk_Jogo_id, fk_Usuario_id } = data;
+    const { nota, fk_jogo_id, fk_usuario_id } = data;
     const result = await pool.query(
-      'INSERT INTO AVALIACAO (nota, fk_Jogo_id, fk_Usuario_id) VALUES ($1, $2, $3) RETURNING *',
-      [nota, fk_Jogo_id, fk_Usuario_id]
+      'INSERT INTO AVALIACAO (nota, fk_jogo_id, fk_usuario_id) VALUES ($1, $2, $3) RETURNING *',
+      [nota, fk_jogo_id, fk_usuario_id]
     );
     return result.rows[0];
   }
@@ -21,11 +21,19 @@ export class AvaliacaoService {
     return result.rows[0] || null;
   }
 
+  static async getByUsuarioJogoId(fk_Usuario_id: number, fk_Jogo_id: number): Promise<Avaliacao | null> {
+    const result = await pool.query(
+      'SELECT * FROM AVALIACAO WHERE fk_Usuario_id = $1 AND fk_Jogo_id = $2',
+      [fk_Usuario_id, fk_Jogo_id]
+    );
+    return result.rows[0] || null;
+  }
+
   static async update(id: number, data: CreateAvaliacaoDTO): Promise<Avaliacao | null> {
-    const { nota, fk_Jogo_id, fk_Usuario_id } = data;
+    const { nota, fk_jogo_id, fk_usuario_id } = data;
     const result = await pool.query(
       'UPDATE AVALIACAO SET nota=$1, fk_Jogo_id=$2, fk_Usuario_id=$3 WHERE id=$4 RETURNING *',
-      [nota, fk_Jogo_id, fk_Usuario_id, id]
+      [nota, fk_jogo_id, fk_usuario_id, id]
     );
     return result.rows[0] || null;
   }

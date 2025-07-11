@@ -29,7 +29,7 @@ router.get(
   asyncHandler(CategoriaController.getById)
 );
 
-router.get(
+router.post(
   '/batch',
   validateRequest({
     body: IdsBodySchema
