@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Nav from '../components/shared/Nav';
-import Footer from '../components/shared/Footer';
 import GameCard from '../components/GameCard';
 import Avaliacao from '../components/Avaliacao';
 import AllReviews from '../components/AllReviews';
@@ -35,7 +34,6 @@ function SelectedGame() {
       <>
         <Nav />
         <div className="text-center mt-10 text-white">{ message }</div>
-        <Footer />
       </>
     );
   }
@@ -44,7 +42,7 @@ function SelectedGame() {
     <>
       <Nav />
       <section className="flex flex-col items-center gap-6 mt-10 px-4 text-white">
-        <GameCard game={jogo} size='xlarge' rating={jogo.rating} width='1000px' height='400px' description={true}/>
+        <GameCard game={jogo} size='xlarge' rating={jogo.rating} quantity={jogo.totalUserRatings} width='1000px' height='400px' description={true}/>
       </section>
       
       <section className="w-full px-8 mt-8">
@@ -58,8 +56,6 @@ function SelectedGame() {
       </div>
 
       <AllReviews gameId={jogo.id} currentUserId={usuarioLogado?.id} />
-      
-      <Footer />
     </>
   );
 }
